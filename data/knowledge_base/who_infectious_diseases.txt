@@ -1,0 +1,320 @@
+WHO Vector-Borne & Infectious Disease Fact Sheets — Sehat Saathi Knowledge Base
+Source: World Health Organization (WHO) Fact Sheets, NVBDCP India, Central TB Division India
+Last Updated: 2024
+
+==========================================================================
+DENGUE FEVER — COMPLETE GUIDE
+==========================================================================
+
+WHAT IS DENGUE:
+Dengue is a mosquito-borne viral infection caused by dengue virus (DENV), transmitted by
+Aedes aegypti mosquito (also called the tiger mosquito — black and white stripes, bites
+during daytime, especially morning and late afternoon).
+
+India records approximately 200,000+ dengue cases annually. Urban and semi-urban areas
+are most affected. Rainy season (July–November) is peak dengue season.
+
+SYMPTOMS OF DENGUE — APPEAR 4–10 DAYS AFTER MOSQUITO BITE:
+Classic dengue fever:
+- Sudden high fever (39–40°C, very characteristic)
+- Severe headache (especially behind the eyes — retro-orbital pain)
+- Severe muscle and joint pain (called "breakbone fever" for this reason)
+- Skin rash (appears 2–5 days after fever onset, red patches on trunk and limbs)
+- Nausea and vomiting
+- Fatigue and weakness
+- Loss of appetite
+
+DENGUE SEVERITY CLASSIFICATION:
+Dengue without Warning Signs: Fever, nausea, rash, aches — can be managed at home with close monitoring
+Dengue with Warning Signs (requires medical attention):
+  - Abdominal pain or tenderness
+  - Persistent vomiting
+  - Clinical fluid accumulation (swelling, difficulty breathing)
+  - Mucosal bleeding (nose bleed, gum bleeding)
+  - Restlessness or lethargy
+  - Liver enlargement >2 cm
+  - Rapid decrease in platelet count
+Severe Dengue (EMERGENCY — hospitalise immediately):
+  - Severe plasma leakage leading to dengue shock syndrome
+  - Severe bleeding
+  - Severe organ involvement (liver, CNS, heart, kidneys)
+
+WARNING SIGNS — WHEN TO RUSH TO HOSPITAL:
+Go immediately to hospital if dengue patient has:
+- Bleeding from any site (nose, gums, under skin, in urine or stool)
+- Blood-stained vomit or black tarry stool
+- Severe abdominal pain
+- Rapid breathing or difficulty breathing
+- Cold, clammy skin, pale appearance
+- Extremely restless or very drowsy
+- No urine output for 6+ hours
+
+DENGUE TREATMENT:
+There is NO specific antiviral drug for dengue. Treatment is supportive:
+- Rest
+- Adequate fluid intake — oral rehydration (3 litres/day for adults)
+- Paracetamol for fever and pain (NEVER give aspirin or ibuprofen — increases bleeding risk)
+- Avoid non-steroidal anti-inflammatory drugs (NSAIDs) such as ibuprofen, diclofenac, aspirin
+- Mosquito nets while patient has fever (to prevent spread to others via mosquitoes)
+- Platelet count monitoring — seek medical advice if falling rapidly
+
+DENGUE DIAGNOSIS:
+- NS1 Antigen test (detectable in first 5 days of fever)
+- Dengue IgM/IgG antibody test
+- Complete Blood Count (CBC) — platelet count and haematocrit
+Available at government hospitals and private labs
+
+DENGUE PREVENTION:
+1. Eliminate mosquito breeding sites (Aedes breeds in clean standing water):
+   - Empty, clean or cover all water storage containers weekly
+   - Dispose of discarded tyres, pots, tins, coconut shells (hold water)
+   - Change water in flower vases and pet water bowls weekly
+   - Keep overhead tanks and drums tightly covered
+   - Unclog roof gutters so water does not pool
+
+2. Personal protection from mosquito bites:
+   - Use mosquito repellent (DEET-based) on exposed skin during daytime
+   - Wear full-sleeved clothing, especially in morning and late afternoon
+   - Use mosquito nets (especially useful for infants and young children)
+   - Use window and door screens
+   - Use mosquito coils or vaporisers indoors
+
+3. Government control measures:
+   - Source reduction drives by municipal authorities
+   - Larval surveillance and larviciding
+   - Fogging during outbreaks (adulticiding)
+   - Report dengue breeding sites to local municipality
+
+DENGUE VACCINE:
+Dengvaxia vaccine exists but is not yet in India's National Immunization Programme.
+
+==========================================================================
+CHIKUNGUNYA
+==========================================================================
+
+WHAT IS CHIKUNGUNYA:
+Chikungunya is a viral disease transmitted by Aedes mosquitoes (same as dengue).
+Often co-occurs with dengue outbreaks. The name means "to become bent" in
+Makonde language, describing the stooped posture from severe joint pain.
+
+SYMPTOMS:
+- Sudden onset of high fever
+- SEVERE joint pain (distinguishing feature — can last months)
+- Muscle pain
+- Headache
+- Nausea
+- Fatigue
+- Skin rash
+
+DIFFERENCE FROM DENGUE:
+- Joint pain in chikungunya is much more severe and prolonged (can last weeks to months)
+- Rarely life-threatening (unlike severe dengue)
+- No warning signs that indicate rapid deterioration
+- Bleeding complications are rare
+
+TREATMENT: No specific treatment. Rest, fluids, paracetamol for pain and fever.
+Prevention: Same mosquito control measures as dengue.
+
+==========================================================================
+LEPTOSPIROSIS
+==========================================================================
+
+WHAT IS LEPTOSPIROSIS:
+Leptospirosis is a bacterial disease caused by Leptospira bacteria.
+Transmitted through contact with water or soil contaminated by urine of infected animals
+(particularly rats). Wading through floodwater is a major risk.
+
+HIGH RISK SITUATIONS:
+- Wading or swimming in floodwater
+- Agricultural workers (paddy fields)
+- Workers in sewers, mines, abattoirs
+- After floods — increased rodent activity
+
+SYMPTOMS (appear 2–30 days after exposure):
+- High fever
+- Severe headache
+- Muscle pain (especially calves)
+- Chills
+- Red eyes (conjunctival suffusion)
+- Nausea and vomiting
+- Skin rash
+
+SEVERE LEPTOSPIROSIS (Weil's disease — EMERGENCY):
+- Jaundice (yellow eyes and skin)
+- Kidney failure
+- Meningitis
+- Lung haemorrhage
+- Can be fatal if not treated promptly
+
+TREATMENT: Antibiotics (Doxycycline, Penicillin, Amoxicillin) — prescribed by doctor
+PREVENTION:
+- Avoid wading in floodwater, especially with cuts or wounds
+- Wear rubber boots and gloves in high-risk work
+- Do not swim in potentially contaminated water sources
+- Doxycycline chemoprophylaxis recommended for high-risk individuals after flood exposure (doctor's prescription needed)
+
+==========================================================================
+TYPHOID FEVER
+==========================================================================
+
+WHAT IS TYPHOID:
+Typhoid fever is caused by Salmonella typhi bacteria. Spread through contaminated
+food or water. Very common in areas with poor sanitation and water quality.
+
+SYMPTOMS (appear 1–3 weeks after exposure):
+- Gradually rising fever (rises each day — stepladder pattern)
+- Headache
+- Weakness and fatigue
+- Stomach pain
+- Loss of appetite
+- Constipation or diarrhoea
+- Characteristic: Bradycardia (slow pulse despite high fever)
+- Rose spots (faint pink rash on chest/abdomen) in some patients
+
+COMPLICATIONS (if untreated):
+- Intestinal perforation (hole in gut) — EMERGENCY requiring surgery
+- Internal bleeding
+- Encephalopathy (brain involvement)
+- Can be fatal if untreated
+
+DIAGNOSIS: Blood culture (gold standard), Widal test (less specific)
+
+TREATMENT:
+- Antibiotics (Fluoroquinolones, third-generation cephalosporins, Azithromycin)
+- Treatment course is 5–14 days depending on drug chosen
+- Drug-resistant typhoid (XDR typhoid) is emerging — report treatment failure to doctor
+- Adequate rest and oral fluids
+
+PREVENTION:
+- Drink only boiled or treated/bottled water
+- Eat thoroughly cooked hot food
+- Avoid raw vegetables washed in tap water in endemic areas
+- Wash hands thoroughly before eating and after using toilet
+- Typhoid Vi polysaccharide vaccine (TCV) — available privately, not yet in NIS
+
+==========================================================================
+JAPANESE ENCEPHALITIS (JE)
+==========================================================================
+
+WHAT IS JE:
+Japanese Encephalitis is a viral brain infection transmitted by Culex mosquitoes
+that breed in rice paddies and stagnant water. Found in rural farming areas.
+
+HIGH-RISK DISTRICTS: About 24 states in India, especially Assam, Uttar Pradesh,
+Bihar, West Bengal, Tamil Nadu, Karnataka, Andhra Pradesh.
+
+SYMPTOMS:
+- High fever
+- Headache
+- Stiff neck
+- Vomiting
+- Confusion or altered behaviour
+- Can progress to coma and death
+- Long-term neurological disabilities in survivors
+
+JE VACCINATION (FREE under UIP in endemic districts):
+- JE-1: At 9 months
+- JE-2: At 15–18 months
+- Given to ALL children in endemic districts
+
+PREVENTION: Mosquito control, avoiding peak biting times (dusk and dawn),
+use of insecticide-treated nets.
+
+==========================================================================
+KALA-AZAR (Visceral Leishmaniasis)
+==========================================================================
+
+WHAT IS KALA-AZAR:
+Kala-azar (meaning "black fever") is a parasitic disease transmitted by the
+bite of sandflies (Phlebotomus). It is fatal if untreated.
+
+ENDEMIC AREAS IN INDIA: Bihar, Jharkhand, West Bengal, Uttar Pradesh.
+
+SYMPTOMS (develop weeks to months after sandfly bite):
+- Prolonged irregular fever (weeks to months)
+- Significant weight loss
+- Enlarged spleen (splenomegaly) — main clinical feature
+- Enlarged liver
+- Swollen lymph nodes
+- Anaemia (very pale appearance)
+- Darkening of the skin (especially on face, hands — hence "black fever")
+- Progressive weakness
+
+DIAGNOSIS: rK39 rapid test, blood smear, PCR — available free at PHCs in endemic areas.
+
+TREATMENT: Free treatment at all government health centres in endemic areas.
+India has a National Kala-Azar Elimination Programme — target to eliminate by 2023.
+Treatment: Liposomal Amphotericin B (single-dose IV injection under NVBDCP)
+
+PREVENTION:
+- Indoor residual spraying (IRS) — government programme
+- Use insecticide-treated bed nets
+- Apply mosquito repellent
+- Report fever lasting more than 2 weeks in endemic areas to PHC immediately
+
+==========================================================================
+CHOLERA
+==========================================================================
+
+WHAT IS CHOLERA:
+Cholera is an acute intestinal infection caused by Vibrio cholerae bacteria.
+Spread through contaminated water or food. Can cause rapid, severe dehydration and death.
+
+SYMPTOMS:
+- Sudden onset of profuse, watery "rice-water" diarrhoea (very characteristic)
+- No pain, no blood (unlike dysentery)
+- Rapid dehydration
+- Muscle cramps
+- Vomiting
+- Can progress to shock and death within hours if untreated
+
+CHOLERA IS A MEDICAL EMERGENCY:
+- A person with suspected cholera can lose 10–20 litres of fluid per day
+- Death can occur within hours without treatment
+- Immediately start ORS and get to hospital
+
+TREATMENT:
+- Aggressive oral rehydration with ORS
+- IV fluids for severe cases (at hospital)
+- Antibiotics shorten duration — prescribed by doctor
+- With prompt treatment, mortality is less than 1%
+
+PREVENTION:
+- Drink only boiled or treated water — MOST IMPORTANT
+- Wash hands with soap after toilet use and before eating
+- Cook food thoroughly, eat while hot
+- Avoid raw shellfish and raw vegetables in outbreak areas
+
+==========================================================================
+RABIES
+==========================================================================
+
+WHAT IS RABIES:
+Rabies is a viral disease that affects the brain and nervous system. Almost always fatal
+once symptoms appear. Caused by rabies virus, transmitted through saliva of infected animals.
+
+IN INDIA: Dogs are responsible for 97% of rabies deaths. 
+India accounts for about 36% of world's rabies deaths.
+
+TRANSMISSION: Bite, scratch, or lick on broken skin/mucous membranes of infected animal.
+
+POST-EXPOSURE PROPHYLAXIS (PEP) — URGENT:
+If bitten or scratched by an animal:
+1. IMMEDIATELY wash wound with soap and water for 15 minutes — most important first step
+2. Apply betadine (povidone iodine) or alcohol
+3. Go to hospital/PHC IMMEDIATELY — do not wait for symptoms
+4. Get anti-rabies vaccination series (4 doses: Day 0, 3, 7, 14) — FREE at government hospitals
+5. Get rabies immunoglobulin (RIG) for severe bites (Category III) — FREE at government hospitals
+
+WOUND CATEGORIES:
+Category I: Touching/feeding animal, lick on intact skin — No PEP needed
+Category II: Nibbling, superficial scratches without bleeding — Wound washing + vaccine
+Category III: Single or multiple transdermal bites, contamination of mucous membrane with saliva — Wound washing + vaccine + RIG (URGENT)
+
+PREVENTION:
+- Vaccinate pet dogs and cats
+- Avoid contact with stray dogs, cats, monkeys, bats
+- Do not provoke animals
+- Anti-rabies PEP is available FREE at all government hospitals — act fast
+
+IMPORTANT: Once rabies symptoms appear, there is NO cure. PEP MUST be started BEFORE symptoms.

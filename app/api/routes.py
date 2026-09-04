@@ -25,6 +25,7 @@ from app.api.schemas import (
 )
 from app.agent.memory import clear_memory, list_sessions
 from app.config import settings
+from app.api.whatsapp import router as whatsapp_router
 
 logger = logging.getLogger(__name__)
 
@@ -51,6 +52,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Include WhatsApp router
+app.include_router(whatsapp_router)
+
 # Lazy-load agent to avoid startup delay
 _agent = None
 
@@ -58,13 +62,12 @@ _agent = None
 def _get_agent():
     global _agent
     if _agent is None:
-        if settings.mock_mode:
-            logger.info("MOCK MODE active — starting without API keys")
-            from app.agent.mock_agent import MockSehatAgent
-            _agent = MockSehatAgent()
-        else:
-            from app.agent.sehat_agent import get_agent
-            _agent = get_agent()
+        # Always use MockSehatAgent as the base — it handles all tools
+        # OLLAMA_MODE enhances the LLM responses inside mock agent
+        logger.info("Starting Sehat Saathi agent (mock_mode=%s, ollama_mode=%s)",
+                    settings.mock_mode, settings.ollama_mode)
+        from app.agent.mock_agent import MockSehatAgent
+        _agent = MockSehatAgent()
     return _agent
 
 
@@ -103,6 +106,22 @@ async def chat(request: ChatRequest):
             user_message=request.message,
             session_id=request.session_id,
         )
+
+        # Track analytics (non-blocking, best-effort)
+        try:
+            from app.analytics import track_query
+            track_query(
+                session_id=request.session_id,
+                message=request.message,
+                detected_language=result.get("detected_language", "en"),
+                category=result.get("category", "general"),
+                triage_tier=result.get("triage_tier"),
+                is_emergency=result.get("is_emergency", False),
+                location=result.get("location"),
+            )
+        except Exception as analytics_err:
+            logger.debug("Analytics tracking skipped: %s", analytics_err)
+
         return ChatResponse(
             response=result["response"],
             session_id=request.session_id,
@@ -178,6 +197,28 @@ async def voice_chat(request: VoiceInputRequest):
     except Exception as e:
         logger.exception("Voice processing error: %s", e)
         raise HTTPException(status_code=500, detail="Voice processing failed.")
+
+
+@app.get("/analytics", tags=["Analytics"])
+async def get_analytics():
+    """Return aggregated usage analytics for the dashboard."""
+    try:
+        from app.analytics import get_summary
+        return get_summary()
+    except Exception as e:
+        logger.error("Analytics error: %s", e)
+        raise HTTPException(status_code=500, detail="Could not load analytics.")
+
+
+@app.get("/analytics/heatmap", tags=["Analytics"])
+async def get_heatmap_data():
+    """Return location-tagged query data for the disease heatmap."""
+    try:
+        from app.analytics import get_disease_heatmap_data
+        return {"points": get_disease_heatmap_data()}
+    except Exception as e:
+        logger.error("Heatmap error: %s", e)
+        raise HTTPException(status_code=500, detail="Could not load heatmap data.")
 
 
 @app.get("/sessions", tags=["System"])

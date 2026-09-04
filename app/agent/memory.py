@@ -6,27 +6,7 @@ Each user session gets its own isolated memory object.
 """
 import logging
 from typing import Dict
-try:
-    from langchain.memory import ConversationBufferMemory
-except ImportError:
-    from langchain_community.chat_message_histories import ChatMessageHistory
-    from langchain_core.chat_history import BaseChatMessageHistory
-    # Minimal replacement for ConversationBufferMemory
-    class ConversationBufferMemory:
-        def __init__(self, memory_key="chat_history", return_messages=True, human_prefix="User", ai_prefix="AI"):
-            self.memory_key = memory_key
-            self.return_messages = return_messages
-            self.chat_memory = ChatMessageHistory()
-
-        def load_memory_variables(self, inputs):
-            return {self.memory_key: self.chat_memory.messages}
-
-        def save_context(self, inputs, outputs):
-            self.chat_memory.add_user_message(inputs.get("input", ""))
-            self.chat_memory.add_ai_message(outputs.get("output", ""))
-
-        def clear(self):
-            self.chat_memory.clear()
+from langchain_classic.memory import ConversationBufferMemory
 
 logger = logging.getLogger(__name__)
 

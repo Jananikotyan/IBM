@@ -1,0 +1,302 @@
+WHO Clinical Guidelines — Sehat Saathi Health Knowledge Base
+Source: World Health Organization (WHO) — Pocket Book of Hospital Care for Children, WHO Fact Sheets
+Last Updated: 2024
+
+==========================================================================
+FEVER ASSESSMENT AND MANAGEMENT
+==========================================================================
+
+DEFINITION:
+Fever is defined as a body temperature of 38°C (100.4°F) or above. It is a sign, not a disease.
+Most fevers are caused by infections and are part of the body's natural immune response.
+
+CLASSIFICATION BY TEMPERATURE:
+- Low-grade fever: 37.5°C to 38.4°C — Monitor at home, rest and fluids
+- Moderate fever: 38.5°C to 39.4°C — See a health worker if it persists beyond 2 days
+- High fever: 39.5°C to 40.9°C — Seek medical attention promptly
+- Very high fever: 41°C or above — EMERGENCY — go to hospital immediately
+
+FEVER IN CHILDREN — RED FLAGS (Seek emergency care immediately):
+- Any fever in a baby under 3 months old
+- Fever above 40°C in a child under 5 years
+- Fever with a stiff neck or headache (may indicate meningitis)
+- Fever with a skin rash, especially spots that don't fade when pressed
+- Fever with difficulty breathing or rapid breathing
+- Fever with seizures (febrile convulsions)
+- Fever with extreme drowsiness, not waking up, or unconscious
+- Fever with refusal to drink fluids
+
+HOME MANAGEMENT OF MILD FEVER:
+- Increase fluid intake — water, ORS, coconut water, diluted juice
+- Dress child lightly — do not wrap tightly
+- Sponging with lukewarm (not cold) water can help
+- Paracetamol may reduce discomfort — dose per body weight, every 6 hours
+- Never give aspirin to children — risk of Reye's syndrome
+- Monitor temperature every 4–6 hours
+
+WHEN TO SEEK MEDICAL CARE:
+- Fever lasting more than 3 days without improvement
+- Fever in a child under 1 year lasting more than 24 hours
+- Temperature above 39.5°C despite home measures
+- Child looks very ill, is not alert, not feeding or drinking
+
+==========================================================================
+DIARRHOEA AND DEHYDRATION
+==========================================================================
+
+DEFINITION:
+Diarrhoea is the passage of 3 or more loose or liquid stools per day. Acute diarrhoea
+lasts less than 14 days. Persistent diarrhoea lasts 14 days or more. Dysentery is
+diarrhoea with blood in the stool.
+
+ORAL REHYDRATION THERAPY (ORT) — WHO STANDARD:
+ORS (Oral Rehydration Solution) is the first-line treatment for diarrhoea.
+Available FREE at all government health centres in India.
+
+WHO ORS Formula (per 1 litre of safe water):
+- Sodium chloride (table salt): 2.6 g
+- Trisodium citrate: 2.9 g
+- Potassium chloride: 1.5 g
+- Glucose (anhydrous): 13.5 g
+(Or use pre-packaged ORS sachets — dissolve one sachet in 1 litre clean water)
+
+Home ORS Recipe (if ORS packet not available):
+- 1 litre clean water (boiled and cooled)
+- 6 level teaspoons of sugar
+- Half (1/2) level teaspoon of salt
+- Add juice of half a lemon for potassium (optional)
+
+HOW MUCH ORS TO GIVE:
+- After each loose stool: Under 2 years: 50–100 ml; 2–10 years: 100–200 ml; Older: 200–400 ml
+- Continue until diarrhoea stops
+
+SIGNS OF DEHYDRATION — ASSESS CAREFULLY:
+Mild: Thirsty, slightly dry mouth — treat at home with ORS
+Moderate: Restless or irritable, sunken eyes, dry mouth, skin pinch returns slowly (1–2 sec) — see a doctor
+Severe: Lethargic/unconscious, very sunken eyes, unable to drink, skin pinch returns very slowly (>2 sec) — EMERGENCY
+
+CONTINUE FEEDING DURING DIARRHOEA:
+- Continue breastfeeding — never stop during diarrhoea
+- After ORS, offer food as soon as child is willing to eat
+- Extra feeding after recovery to catch up on nutrition
+
+RED FLAGS — SEEK URGENT CARE:
+- Blood in stool (dysentery)
+- Unable to drink ORS (vomiting everything)
+- Signs of severe dehydration
+- Diarrhoea lasting more than 14 days
+- High fever with diarrhoea
+- Passing no urine for 8+ hours
+
+ZINC SUPPLEMENTATION FOR CHILDREN:
+WHO recommends zinc supplementation for all children with diarrhoea:
+- Children 6 months to 5 years: 20 mg zinc per day for 10–14 days
+- Children under 6 months: 10 mg zinc per day for 10–14 days
+Zinc reduces duration and severity of diarrhoea and prevents recurrence.
+Available free at government health centres.
+
+PREVENTION OF DIARRHOEA:
+- Handwashing with soap before eating and after using toilet (most effective intervention)
+- Drinking only boiled/treated water
+- Safe food preparation and storage
+- Exclusive breastfeeding for first 6 months
+- Rotavirus vaccine (available free under India's UIP)
+
+==========================================================================
+ACUTE RESPIRATORY INFECTIONS (ARI) AND PNEUMONIA
+==========================================================================
+
+PNEUMONIA — LEADING KILLER OF CHILDREN UNDER 5:
+Pneumonia kills more children than any other infectious disease globally.
+In India, it accounts for 14% of all child deaths. It is preventable and treatable.
+
+CLASSIFICATION OF RESPIRATORY ILLNESS IN CHILDREN:
+1. Cold / Upper Respiratory Infection: Runny nose, mild cough, no fast breathing — Home care
+2. Non-Severe Pneumonia: Fast breathing, no chest indrawing — Oral antibiotics, home care
+3. Severe Pneumonia: Chest indrawing, grunting, nasal flaring — Hospital immediately
+4. Very Severe Pneumonia: Cyanosis, unable to drink, severely ill — EMERGENCY
+
+FAST BREATHING THRESHOLDS (count breaths for 60 seconds):
+- Under 2 months: 60 or more breaths/minute
+- 2–11 months: 50 or more breaths/minute
+- 1–5 years: 40 or more breaths/minute
+- Above 5 years: 30 or more breaths/minute
+
+DANGER SIGNS — GO TO HOSPITAL IMMEDIATELY:
+- Chest indrawing (lower chest wall pulls in with each breath)
+- Nostrils flare with breathing
+- Grunting sound on each breath
+- Bluish or grey lips or fingernails (cyanosis)
+- Stridor (harsh crowing sound when breathing in)
+- Unable to drink or breastfeed
+- Convulsions
+- Extreme drowsiness, difficult to wake
+- Persistent vomiting — cannot keep anything down
+
+HOME CARE FOR MILD COUGH/COLD:
+- Keep child comfortable and rested
+- Honey (1 teaspoon) can soothe cough in children over 1 year — do NOT give to infants
+- Steam inhalation for older children and adults
+- Warm fluids help thin mucus
+- Do NOT use antibiotics for viral respiratory infections
+- Antibiotics are NOT effective against viruses
+
+PNEUMONIA PREVENTION:
+- Pneumococcal vaccine (PCV) — free under India's UIP
+- Haemophilus influenzae type b vaccine (Hib) — included in Pentavalent vaccine under UIP
+- Exclusive breastfeeding for 6 months
+- Adequate nutrition — malnourished children at higher risk
+- Reducing indoor air pollution (cooking fires, tobacco smoke)
+
+==========================================================================
+MALARIA
+==========================================================================
+
+WHAT IS MALARIA:
+Malaria is a life-threatening disease caused by Plasmodium parasites transmitted
+by the bite of infected female Anopheles mosquitoes. Most common in tropical and
+subtropical areas including many parts of India.
+
+MALARIA-ENDEMIC STATES IN INDIA:
+High burden: Odisha, Jharkhand, Chhattisgarh, Meghalaya, Arunachal Pradesh, Mizoram,
+Madhya Pradesh, West Bengal, Gujarat tribal areas, Karnataka (forest areas)
+
+SYMPTOMS OF MALARIA:
+Classic presentation: Cyclical fever with chills, shivering, sweating, and headache
+- Fever — often with teeth chattering and extreme chills
+- Profuse sweating when fever breaks
+- Severe headache
+- Muscle aches and joint pain
+- Nausea, vomiting, diarrhoea
+- Fatigue and weakness
+Symptoms appear 10–15 days after mosquito bite (Plasmodium falciparum)
+
+SEVERE MALARIA — EMERGENCY SIGNS:
+- Altered consciousness or coma
+- Repeated convulsions
+- Difficulty breathing
+- Inability to stand or sit without support
+- Abnormal bleeding
+- Jaundice (yellow eyes/skin)
+- Dark or black urine
+- Severe anaemia (very pale palms, conjunctiva)
+SEVERE MALARIA IS A MEDICAL EMERGENCY — Call 108 and go to hospital immediately
+
+MALARIA DIAGNOSIS:
+- Rapid Diagnostic Test (RDT) — available FREE at all PHCs in India
+- Microscopy (blood smear) — gold standard
+- Any fever with chills in malaria-endemic area: GET TESTED — do not self-medicate
+
+TREATMENT:
+- Treatment must be prescribed by a healthcare provider
+- Artemisinin-based Combination Therapy (ACT) is first-line for P. falciparum
+- Chloroquine for P. vivax (where not resistant)
+- Primaquine for radical cure and prevention of transmission
+- FREE treatment at all government health facilities in India
+- Complete the FULL course even if you feel better — stopping early causes resistance
+
+MALARIA PREVENTION:
+- Sleep under Insecticide-Treated Nets (ITNs) — distributed free by government
+- Use indoor residual spraying (IRS) — government spraying programme
+- Wear long-sleeved clothing at dusk and dawn
+- Eliminate stagnant water around the home
+- Apply mosquito repellent on exposed skin
+
+==========================================================================
+TUBERCULOSIS (TB)
+==========================================================================
+
+WHAT IS TB:
+Tuberculosis is caused by the bacterium Mycobacterium tuberculosis. It primarily
+affects the lungs (pulmonary TB) but can affect any organ. TB spreads through
+the air when a person with active TB coughs, sneezes, or speaks.
+
+TB IS CURABLE — Complete the full 6-month treatment.
+FREE diagnosis and treatment at all government health facilities in India.
+
+SYMPTOMS OF TB:
+- Persistent cough lasting 2 weeks or more
+- Blood in sputum (coughing up blood)
+- Unexplained weight loss
+- Night sweats (drenching sweats during sleep)
+- Loss of appetite
+- Persistent fatigue
+- Low-grade fever, especially in evenings
+- Chest pain
+
+WHEN TO SUSPECT TB:
+Any person with a cough for 2 weeks or more should be tested for TB.
+Free testing available at all PHCs, CHCs and district hospitals.
+
+DIAGNOSIS:
+- Sputum smear microscopy (free at all government labs)
+- GeneXpert / CBNAAT test (free under RNTCP/NTP)
+- Chest X-ray
+- DSTB (Drug-Sensitive TB) vs DRTB (Drug-Resistant TB) distinction is critical
+
+NATIONAL TB ELIMINATION PROGRAMME (NTP) INDIA:
+- Nikshay Portal: All TB patients registered nationally
+- Nikshay Poshan Yojana: Rs. 500/month nutritional support for patients on treatment
+- FREE drugs: Full DOTS (Directly Observed Treatment, Short-course) available
+- Treatment duration: 6 months for drug-sensitive TB
+- DRTB treatment: 9–20 months
+
+TREATMENT — DO NOT STOP EARLY:
+Stopping TB treatment before completion leads to Drug-Resistant TB (DRTB),
+which is much harder and more expensive to treat and can be fatal.
+Complete ALL 6 months even if you feel completely well after 2 months.
+
+PREVENTION:
+- BCG vaccine at birth (free under India's UIP) — protects against severe forms in children
+- Good ventilation in homes and public spaces
+- Cover mouth when coughing (cough hygiene)
+- HIV testing in TB patients — HIV-TB co-infection worsens outcomes
+
+==========================================================================
+ANAEMIA IN WOMEN AND CHILDREN
+==========================================================================
+
+DEFINITION:
+Anaemia is defined as a haemoglobin (Hb) level below:
+- Children 6 months to 5 years: <11 g/dL
+- Children 5–12 years: <11.5 g/dL
+- Adolescent girls: <12 g/dL
+- Pregnant women: <11 g/dL
+- Non-pregnant women: <12 g/dL
+
+India has one of the highest anaemia burdens in the world.
+Anaemia affects 53% of women of reproductive age and 58% of children under 5 in India.
+
+SYMPTOMS OF ANAEMIA:
+- Fatigue and weakness
+- Pale skin, pale inner eyelids, pale gums
+- Shortness of breath on exertion
+- Dizziness or lightheadedness
+- Rapid heartbeat
+- Cold hands and feet
+- Poor concentration, difficulty studying (in children)
+
+CAUSES IN INDIA:
+- Iron deficiency (most common) — poor diet, inadequate iron absorption
+- Malaria — destroys red blood cells
+- Worm infestation (hookworm) — causes blood loss
+- Vitamin B12 and folate deficiency
+- Thalassaemia (genetic condition)
+
+TREATMENT AND PREVENTION:
+- Iron-Folic Acid (IFA) tablets — FREE at all government health facilities
+  * Pregnant women: 1 tablet daily throughout pregnancy + 6 months post-delivery
+  * Children 5–10 years: 1 tablet (small dose) weekly under WIFS programme
+  * Adolescent girls: 1 weekly tablet under WIFS (Weekly Iron Folic acid Supplementation)
+- Dietary iron: Green leafy vegetables, jaggery, beans, lentils, meat, eggs
+- Vitamin C increases iron absorption — eat fruits with iron-rich meals
+- Avoid tea/coffee with meals — they inhibit iron absorption
+- Deworming: Albendazole 400mg once yearly for children 1–5 years (free under NHM)
+
+ANAEMIA IN PREGNANCY:
+Severe anaemia in pregnancy is dangerous:
+- Risk of premature birth
+- Low birth weight baby
+- Increased risk of maternal death
+All pregnant women should take IFA tablets throughout pregnancy.
+Haemoglobin tested at every ANC visit — free at government facilities.

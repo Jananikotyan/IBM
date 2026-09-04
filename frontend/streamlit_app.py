@@ -28,7 +28,7 @@ st.set_page_config(
 )
 
 # ─── Constants ────────────────────────────────────────────────────────────────
-API_BASE_URL = "http://localhost:8000"
+API_BASE_URL = "http://127.0.0.1:8000"
 
 LANGUAGE_OPTIONS = {
     "English": "en",
@@ -67,9 +67,28 @@ KANNADA_EXAMPLES = [
     "🤒 Nanna magu 6 varaddu. Yaava lasike koḍabeku?",
     "🌡️ Nanage 2 dinagaḷinda jwara ide mattu tala novu ide",
     "🏥 Hattira aspatre ellidhe? Pincode: 560001",
-    "🤰 Naanu 3 tingaḷu garbhini. Yaava checkup beku?",
-    "💊 ORS endre enu? Yavaga kodabeku?",
-    "😷 Nanage maleria lakshana ide",
+    "💊 ORS endre enu?",
+]
+
+TAMIL_EXAMPLES = [
+    "🤒 என் குழந்தைக்கு 6 வாரம். என்ன தடுப்பூசி போட வேண்டும்?",
+    "🌡️ எனக்கு 2 நாளாக காய்ச்சல் இருக்கிறது",
+    "🏥 அருகிலுள்ள மருத்துவமனை எங்கே? Pincode: 600001",
+    "💊 ORS என்றால் என்ன?",
+]
+
+TELUGU_EXAMPLES = [
+    "🤒 నా బిడ్డకు 6 వారాలు. ఏ వ్యాక్సిన్ వేయాలి?",
+    "🌡️ నాకు 2 రోజులుగా జ్వరంగా ఉంది",
+    "🏥 దగ్గరలో ఆసుపత్రి ఎక్కడ ఉంది? Pincode: 500001",
+    "💊 ORS అంటే ఏమిటి?",
+]
+
+BENGALI_EXAMPLES = [
+    "🤒 আমার শিশুর ৬ সপ্তাহ। কোন টিকা দিতে হবে?",
+    "🌡️ আমার ২ দিন ধরে জ্বর হচ্ছে",
+    "🏥 কাছের হাসপাতাল কোথায়? Pincode: 700001",
+    "💊 ORS কী এবং কখন দেবো?",
 ]
 
 # ─── Custom CSS ───────────────────────────────────────────────────────────────
@@ -271,6 +290,35 @@ with st.sidebar:
         clear_session()
         st.rerun()
 
+    # ── PDF Health Report Download ────────────────────────────────────────────
+    st.markdown("")
+    if st.session_state.messages:
+        try:
+            from app.report_generator import generate_pdf
+            pdf_bytes = generate_pdf(
+                st.session_state.messages,
+                session_id=st.session_state.session_id,
+            )
+            from datetime import datetime as _dt
+            fname = f"sehat_saathi_report_{_dt.now().strftime('%Y%m%d_%H%M')}.pdf"
+            st.download_button(
+                label="📄 Download Health Report (PDF)",
+                data=pdf_bytes,
+                file_name=fname,
+                mime="application/pdf",
+                use_container_width=True,
+                help="Downloads a PDF summary of this conversation",
+            )
+        except Exception as _pdf_err:
+            st.caption(f"⚠️ PDF unavailable: {_pdf_err}")
+    else:
+        st.button(
+            "📄 Download Health Report (PDF)",
+            disabled=True,
+            use_container_width=True,
+            help="Start a conversation first",
+        )
+
     st.markdown("---")
 
     # Quick example queries
@@ -291,6 +339,27 @@ with st.sidebar:
     st.markdown("### 🇮🇳 ಕನ್ನಡ (Kannada)")
     for example in KANNADA_EXAMPLES:
         if st.button(example, use_container_width=True, key=f"kn_{example[:20]}"):
+            st.session_state["pending_message"] = example.split(" ", 1)[1]
+            st.rerun()
+
+    st.markdown("---")
+    st.markdown("### 🇮🇳 தமிழ் (Tamil)")
+    for example in TAMIL_EXAMPLES:
+        if st.button(example, use_container_width=True, key=f"ta_{example[:20]}"):
+            st.session_state["pending_message"] = example.split(" ", 1)[1]
+            st.rerun()
+
+    st.markdown("---")
+    st.markdown("### 🇮🇳 తెలుగు (Telugu)")
+    for example in TELUGU_EXAMPLES:
+        if st.button(example, use_container_width=True, key=f"te_{example[:20]}"):
+            st.session_state["pending_message"] = example.split(" ", 1)[1]
+            st.rerun()
+
+    st.markdown("---")
+    st.markdown("### 🇧🇩 বাংলা (Bengali)")
+    for example in BENGALI_EXAMPLES:
+        if st.button(example, use_container_width=True, key=f"bn_{example[:20]}"):
             st.session_state["pending_message"] = example.split(" ", 1)[1]
             st.rerun()
 
@@ -412,48 +481,75 @@ if "pending_message" in st.session_state:
     st.session_state["auto_send"] = pending
 
 
-# ─── Voice Input (Whisper STT — no API key needed) ───────────────────────────
-with st.expander("🎙️ Voice Input — Click to speak your question", expanded=False):
-    st.caption("Record your voice → it gets transcribed → auto-sent as your message")
+# ─── Voice Input (Groq Whisper STT) ─────────────────────────────────────────
+# Show transcription result ABOVE the expander so it's visible after send
+if "transcribed_voice" in st.session_state:
+    _tv = st.session_state["transcribed_voice"]
+    st.success(f"🎙️ Transcribed: **{_tv}**")
+    col_send, col_cancel = st.columns([3, 1])
+    if col_send.button("📤 Send voice message", key="voice_send_btn", type="primary", use_container_width=True):
+        st.session_state["voice_message"] = _tv
+        st.session_state.pop("transcribed_voice", None)
+        st.session_state.pop("last_audio_hash", None)
+        st.rerun()
+    if col_cancel.button("✖ Cancel", key="voice_cancel_btn", use_container_width=True):
+        st.session_state.pop("transcribed_voice", None)
+        st.session_state.pop("last_audio_hash", None)
+        st.rerun()
 
-    audio = st.audio_input("🎙️ Click the mic, speak, then click stop")
+with st.expander("🎙️ Voice Input — Speak in English, Hindi or Kannada", expanded=False):
+    st.caption("Record → Stop → click **Send voice message** above")
+
+    audio = st.audio_input("🎙️ Click mic, speak, then click stop", key="voice_recorder")
 
     if audio is not None:
-        # Try transcribe with faster-whisper (offline, no API key)
-        try:
-            import io
-            import tempfile
-            import os
-            from faster_whisper import WhisperModel
-
-            # Save audio bytes to a temp wav file
-            with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
-                tmp.write(audio.read())
-                tmp_path = tmp.name
-
-            with st.spinner("🔄 Transcribing your voice..."):
-                model = WhisperModel("tiny", device="cpu", compute_type="int8")
-                segments, info = model.transcribe(tmp_path, beam_size=1)
-                transcribed = " ".join(seg.text for seg in segments).strip()
-            os.unlink(tmp_path)
-
-            if transcribed:
-                st.success(f"✅ Heard: **{transcribed}**")
-                st.session_state["auto_send"] = transcribed
-                st.rerun()
-            else:
-                st.warning("Could not hear clearly. Please try again.")
-
-        except ImportError:
-            # faster-whisper not installed — show install tip
-            st.info(
-                "📦 To enable voice transcription, run this command in PowerShell:\n\n"
-                "```\nC:\\Users\\janani\\AppData\\Local\\Programs\\Python\\Python313\\python.exe "
-                "-m pip install faster-whisper\n```\n\n"
-                "Then refresh this page. *(Free, works offline, no API key needed)*"
+        groq_key = os.getenv("GROQ_API_KEY", "")
+        if not groq_key or groq_key == "your_groq_api_key_here":
+            st.warning(
+                "⚠️ **GROQ_API_KEY not set.**\n\n"
+                "1. Get a free key at **console.groq.com**\n"
+                "2. Add it to your `.env` file: `GROQ_API_KEY=your_key`\n"
+                "3. Restart the backend"
             )
-        except Exception as e:
-            st.error(f"Voice error: {e}")
+        else:
+            # Use audio hash to avoid re-transcribing the same clip on every rerun
+            audio_bytes = audio.read()
+            audio_hash = hash(audio_bytes)
+
+            if st.session_state.get("last_audio_hash") != audio_hash:
+                # New audio clip — transcribe it once
+                st.session_state["last_audio_hash"] = audio_hash
+                st.session_state.pop("transcribed_voice", None)
+
+                try:
+                    from groq import Groq
+                    import tempfile, os as _os
+
+                    with tempfile.NamedTemporaryFile(suffix=".wav", delete=False) as tmp:
+                        tmp.write(audio_bytes)
+                        tmp_path = tmp.name
+
+                    with st.spinner("🔄 Transcribing with Groq Whisper..."):
+                        client = Groq(api_key=groq_key)
+                        with open(tmp_path, "rb") as f:
+                            resp = client.audio.transcriptions.create(
+                                model="whisper-large-v3-turbo",
+                                file=("audio.wav", f),
+                                response_format="text",
+                            )
+                        transcribed = str(resp).strip()
+                    _os.unlink(tmp_path)
+
+                    if transcribed:
+                        st.session_state["transcribed_voice"] = transcribed
+                        st.rerun()   # rerun to show Send button ABOVE the expander
+                    else:
+                        st.warning("Could not hear clearly. Please try again.")
+
+                except ImportError:
+                    st.info("📦 Install Groq: `pip install groq`")
+                except Exception as e:
+                    st.error(f"Voice error: {e}")
 
 
 # ─── Chat Input ───────────────────────────────────────────────────────────────
@@ -465,6 +561,10 @@ prompt = st.chat_input(
 # Handle auto-send from example buttons
 if "auto_send" in st.session_state:
     prompt = st.session_state.pop("auto_send")
+
+# Handle voice message — set by Send button above
+if "voice_message" in st.session_state:
+    prompt = st.session_state.pop("voice_message")
 
 if prompt:
     # Add user message to history
@@ -486,7 +586,7 @@ if prompt:
 
     # Get response from API
     with st.chat_message("assistant", avatar="🏥"):
-        with st.spinner("Sehat Saathi is thinking..."):
+        with st.spinner("⏳ Sehat Saathi is thinking... (may take 5-10 sec for AI responses)"):
             api_response = send_message(prompt, st.session_state.session_id)
 
         response_text = api_response.get("response", "I'm unable to respond right now.")

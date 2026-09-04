@@ -1,6 +1,10 @@
-# Core Orchestration (Mock mode — no IBM watsonx needed)
+# Core Orchestration
 langchain>=1.3.0
 langchain-community>=0.3.0
+langchain-ollama>=0.2.0
+
+# Groq API (Translation via LLaMA + Whisper STT)
+groq>=0.9.0
 
 # Vector Store / RAG
 chromadb>=0.6.0
@@ -20,9 +24,23 @@ tenacity>=8.5.0
 
 # Frontend
 streamlit>=1.38.0
+folium>=0.17.0
+streamlit-folium>=0.22.0
 
-# PDF loader support
+# Analytics & Data
+pandas>=2.2.0
+
+# WhatsApp Integration (Twilio)
+twilio>=9.3.0
+
+# PDF loader support (knowledge base ingestion)
 pypdf>=4.3.0
+
+# PDF report generation
+fpdf2>=2.7.0
 
 # Async support
 aiohttp>=3.10.0
+
+# Optional: IBM watsonx (only needed if OLLAMA_MODE=false)
+# pip install langchain-ibm ibm-watsonx-ai ibm-watson

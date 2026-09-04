@@ -3,35 +3,31 @@ Sehat Saathi - Main LangChain Agent
 =====================================
 Orchestrates the full healthcare awareness assistant pipeline:
 
-1. Watson Language Translator: detect language, translate to English
+1. Language detection + translation to English
+   - Ollama mode  → Groq LLaMA translation
+   - IBM mode     → Watson Language Translator
 2. Deterministic Safety Layer: intercept red-flag keywords → emergency escalation
-3. LangChain ReAct Agent:
-   - RAG retrieval (WHO/MoHFW knowledge base via Chroma/FAISS)
-   - Tool routing (symptom_triage, facility_locator, vaccination_schedule)
-   - ConversationBufferMemory per session
-4. IBM watsonx.ai Granite LLM for response generation
-5. Watson Language Translator: translate response back to user's language
+3. LangChain ReAct Agent (RAG + tools + LLM)
+   - Ollama mode  → local Granite via Ollama
+   - IBM mode     → IBM watsonx.ai Granite
+4. Translate response back to user's language
 """
 import logging
 from typing import Optional
 
-from langchain.agents import AgentExecutor, create_react_agent
-from langchain.prompts import PromptTemplate
+from langchain_classic.agents import AgentExecutor, create_react_agent
+from langchain_classic.prompts import PromptTemplate
 from langchain_core.tools import Tool
-try:
-    from langchain_ibm import WatsonxLLM
-except ImportError:
-    WatsonxLLM = None  # not available on Python 3.14 yet
 
 from app.config import settings
 from app.agent.safety_layer import check_red_flags
 from app.agent.memory import get_memory
-from app.multilingual.translator import translator
 from app.rag.vector_store import get_retriever
 from app.tools.symptom_triage import symptom_triage_tool
 from app.tools.facility_locator import facility_locator_tool
 from app.tools.vaccination_schedule import vaccination_schedule_tool
 from app.tools.emergency_escalation import emergency_escalation_tool, get_emergency_response
+from app.multilingual.local_translator import detect_language
 
 logger = logging.getLogger(__name__)
 
@@ -135,29 +131,39 @@ class SehatSaathiAgent:
             raise
 
     def _init_llm(self) -> None:
-        """Initialize IBM watsonx.ai Granite LLM."""
-        logger.info("Initializing IBM watsonx.ai LLM: %s", settings.watsonx_model_id)
-
-        if not settings.watsonx_api_key or settings.watsonx_api_key == "your_watsonx_api_key_here":
-            raise ValueError(
-                "WATSONX_API_KEY is not configured. Please set it in your .env file."
+        """Initialize LLM — Ollama (local Granite) or IBM watsonx.ai."""
+        if settings.ollama_mode:
+            logger.info("OLLAMA MODE — loading local Granite: %s", settings.ollama_model)
+            from app.agent.ollama_llm import get_ollama_llm, check_ollama_running
+            if not check_ollama_running():
+                raise RuntimeError(
+                    "Ollama is not running. Start it with: ollama serve\n"
+                    "Then pull the model: ollama pull granite3.1-dense:2b"
+                )
+            self._llm = get_ollama_llm()
+            logger.info("Ollama Granite LLM initialised.")
+        else:
+            logger.info("IBM MODE — watsonx.ai: %s", settings.watsonx_model_id)
+            if not settings.watsonx_api_key:
+                raise ValueError("WATSONX_API_KEY not set. Set OLLAMA_MODE=true to use local Granite instead.")
+            try:
+                from langchain_ibm import WatsonxLLM
+            except ImportError:
+                raise ImportError("Run: pip install langchain-ibm ibm-watsonx-ai")
+            self._llm = WatsonxLLM(
+                model_id=settings.watsonx_model_id,
+                url=settings.watsonx_url,
+                project_id=settings.watsonx_project_id,
+                apikey=settings.watsonx_api_key,
+                params={
+                    "decoding_method": "greedy",
+                    "max_new_tokens": 1024,
+                    "temperature": 0.3,
+                    "repetition_penalty": 1.1,
+                    "stop_sequences": ["Human:", "User:", "\n\nQuestion:"],
+                },
             )
-
-        self._llm = WatsonxLLM(
-            model_id=settings.watsonx_model_id,
-            url=settings.watsonx_url,
-            project_id=settings.watsonx_project_id,
-            apikey=settings.watsonx_api_key,
-            params={
-                "decoding_method": "greedy",
-                "max_new_tokens": 1024,
-                "min_new_tokens": 50,
-                "temperature": 0.3,
-                "repetition_penalty": 1.1,
-                "stop_sequences": ["Human:", "User:", "\n\nQuestion:"],
-            },
-        )
-        logger.info("watsonx.ai LLM initialized.")
+            logger.info("watsonx.ai LLM initialised.")
 
     def _init_tools(self) -> None:
         """Initialize LangChain tools with RAG-enriched descriptions."""
@@ -180,6 +186,7 @@ class SehatSaathiAgent:
 
         # If RAG is available, add it as a knowledge base tool
         if self._retriever and self._llm:
+            from langchain_classic.chains import RetrievalQAWithSourcesChain
             rag_chain = RetrievalQAWithSourcesChain.from_chain_type(
                 llm=self._llm,
                 chain_type="stuff",
@@ -274,26 +281,31 @@ class SehatSaathiAgent:
         }
 
         # --- Step 1: Language detection & translation to English ---
-        english_input, detected_lang = translator.to_english(user_message)
+        if settings.ollama_mode:
+            from app.multilingual.groq_translator import translate_to_english, translate_from_english
+            english_input, detected_lang = translate_to_english(user_message)
+        else:
+            from app.multilingual.translator import translator as watson_translator
+            english_input, detected_lang = watson_translator.to_english(user_message)
+
         result["detected_language"] = detected_lang
         logger.info("Language: %s | English input: %s...", detected_lang, english_input[:60])
 
         # --- Step 2: Deterministic Red-Flag Safety Check ---
         is_emergency, emergency_category = check_red_flags(english_input)
         if not is_emergency:
-            # Also check original text in case translation missed something
             is_emergency, emergency_category = check_red_flags(user_message)
 
         if is_emergency:
             result["is_emergency"] = True
             emergency_response = get_emergency_response(emergency_category)
-            logger.critical(
-                "EMERGENCY triggered for session %s | category: %s",
-                session_id, emergency_category,
-            )
-            # Translate emergency response back if needed
+            logger.critical("EMERGENCY | session=%s | category=%s", session_id, emergency_category)
             if detected_lang != "en":
-                emergency_response = translator.from_english(emergency_response, detected_lang)
+                if settings.ollama_mode:
+                    emergency_response = translate_from_english(emergency_response, detected_lang)
+                else:
+                    from app.multilingual.translator import translator as watson_translator
+                    emergency_response = watson_translator.from_english(emergency_response, detected_lang)
             result["response"] = emergency_response
             return result
 
@@ -338,7 +350,11 @@ class SehatSaathiAgent:
 
         # --- Step 5: Translate response back to user's language ---
         if detected_lang != "en":
-            final_response = translator.from_english(english_response, detected_lang)
+            if settings.ollama_mode:
+                final_response = translate_from_english(english_response, detected_lang)
+            else:
+                from app.multilingual.translator import translator as watson_translator
+                final_response = watson_translator.from_english(english_response, detected_lang)
         else:
             final_response = english_response
 

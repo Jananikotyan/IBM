@@ -1,0 +1,252 @@
+India Universal Immunization Programme (UIP) — National Immunization Schedule
+Source: Ministry of Health and Family Welfare (MoHFW), Government of India — NIS 2024
+ALL VACCINES UNDER UIP ARE FREE AT GOVERNMENT HEALTH FACILITIES
+
+==========================================================================
+NATIONAL IMMUNIZATION SCHEDULE (NIS) — COMPLETE SCHEDULE
+==========================================================================
+
+ALL children and pregnant women are entitled to FREE vaccination at:
+- Sub-centres (nearest government health post)
+- Primary Health Centres (PHC)
+- Community Health Centres (CHC)
+- Anganwadi Centres
+- District Hospitals
+- Vaccination days: Tuesdays and Fridays at most PHCs
+
+--------------------------------------------------------------------------
+VACCINES AT BIRTH (given in hospital/delivery centre)
+--------------------------------------------------------------------------
+1. BCG (Bacillus Calmette-Guérin)
+   - Protects against: Tuberculosis (TB), especially severe forms in children
+   - Dose: 0.05 ml intradermal, left upper arm
+   - Given: Within 24 hours of birth, before hospital discharge
+   - If missed at birth: Give as soon as possible, up to 1 year of age
+
+2. OPV-0 (Oral Polio Vaccine — Zero Dose)
+   - Protects against: Poliomyelitis
+   - Dose: 2 drops oral
+   - Given: Within 24 hours of birth
+   - Note: This is a "birth dose" — separate from the primary series
+
+3. Hepatitis B — Birth Dose
+   - Protects against: Hepatitis B virus infection (can cause liver cirrhosis and cancer)
+   - Dose: 0.5 ml intramuscular, right thigh
+   - Given: Within 24 hours of birth (ideally within 1 hour of birth)
+   - Critical: Early dose prevents mother-to-child transmission of Hepatitis B
+
+--------------------------------------------------------------------------
+VACCINES AT 6 WEEKS (1.5 months)
+--------------------------------------------------------------------------
+4. OPV-1 (Oral Polio Vaccine — 1st dose)
+   - Dose: 2 drops oral
+
+5. Pentavalent-1 (DPT + Hep B + Hib combined vaccine)
+   - Protects against: Diphtheria, Pertussis (whooping cough), Tetanus, Hepatitis B, H. influenzae type b (Hib)
+   - Dose: 0.5 ml intramuscular, left thigh
+   - Note: Pentavalent replaces separate DPT + Hep B + Hib injections
+
+6. Rotavirus Vaccine-1 (RVV-1)
+   - Protects against: Rotavirus diarrhoea (leading cause of severe diarrhoea in children)
+   - Dose: 5 drops oral
+   - Note: Given in select states/districts — check with your PHC if available
+
+7. fIPV-1 (Fractional dose Inactivated Polio Vaccine)
+   - Dose: 0.1 ml intradermal, right upper arm
+   - Protects against: Polio (injectable form for broader immunity)
+
+8. PCV-1 (Pneumococcal Conjugate Vaccine)
+   - Protects against: Pneumonia, meningitis, and other pneumococcal diseases
+   - Dose: 0.5 ml intramuscular
+   - Note: Available in selected states under phased roll-out
+
+--------------------------------------------------------------------------
+VACCINES AT 10 WEEKS (2.5 months)
+--------------------------------------------------------------------------
+9. OPV-2
+   - Dose: 2 drops oral
+
+10. Pentavalent-2
+    - Dose: 0.5 ml intramuscular, left thigh
+
+11. Rotavirus Vaccine-2 (where available)
+    - Dose: 5 drops oral
+
+--------------------------------------------------------------------------
+VACCINES AT 14 WEEKS (3.5 months)
+--------------------------------------------------------------------------
+12. OPV-3
+    - Dose: 2 drops oral
+
+13. Pentavalent-3
+    - Dose: 0.5 ml intramuscular, left thigh
+
+14. Rotavirus Vaccine-3 (where available)
+    - Dose: 5 drops oral
+
+15. fIPV-2
+    - Dose: 0.1 ml intradermal, right upper arm
+
+16. PCV-2 (where available)
+    - Dose: 0.5 ml intramuscular
+
+--------------------------------------------------------------------------
+VACCINES AT 9 MONTHS
+--------------------------------------------------------------------------
+17. MR-1 (Measles-Rubella — 1st dose)
+    - Protects against: Measles and Rubella (German measles)
+    - Dose: 0.5 ml subcutaneous, right upper arm
+    - Measles is highly infectious and can cause blindness, brain damage, death
+    - Rubella in pregnancy causes congenital rubella syndrome in babies
+
+18. Vitamin A — 1st dose
+    - Dose: 1 lakh (100,000) IU oral (blue capsule)
+    - Prevents: Night blindness, reduces child mortality, boosts immunity
+    - Given along with MR-1
+
+19. JE-1 — Japanese Encephalitis Vaccine (1st dose)
+    - Given only in JE-endemic districts (24 states)
+    - Dose: 0.5 ml subcutaneous
+    - Protects against: Japanese encephalitis (mosquito-borne brain infection)
+
+20. PCV Booster (where available)
+
+--------------------------------------------------------------------------
+VACCINES AT 15–18 MONTHS (Boosters)
+--------------------------------------------------------------------------
+21. MR-2 (Measles-Rubella — 2nd dose/booster)
+    - Dose: 0.5 ml subcutaneous
+    - Second dose ensures over 95% protection
+
+22. DPT Booster-1
+    - Booster for Diphtheria, Pertussis, Tetanus
+    - Dose: 0.5 ml intramuscular
+    - Given at 15–18 months (separate from Pentavalent series)
+
+23. OPV Booster
+    - Dose: 2 drops oral
+
+24. Vitamin A — 2nd dose
+    - Dose: 2 lakh (200,000) IU oral (red capsule)
+
+25. JE-2 (2nd dose in endemic districts)
+
+--------------------------------------------------------------------------
+VITAMIN A SUPPLEMENTATION SCHEDULE (all children)
+--------------------------------------------------------------------------
+- 9 months: 1 lakh IU
+- 15 months: 2 lakh IU
+- 21 months: 2 lakh IU
+- Every 6 months until 5 years: 2 lakh IU
+Total doses: 9 doses between 9 months and 5 years
+Purpose: Prevents blindness, reduces severity of infections, reduces child mortality by up to 25%
+
+--------------------------------------------------------------------------
+VACCINES AT 5 YEARS
+--------------------------------------------------------------------------
+26. DPT Booster-2
+    - Booster for Diphtheria, Pertussis, Tetanus
+    - Dose: 0.5 ml intramuscular
+
+--------------------------------------------------------------------------
+VACCINES AT 10 YEARS
+--------------------------------------------------------------------------
+27. Td (Tetanus-diphtheria)
+    - Dose: 0.5 ml intramuscular
+
+--------------------------------------------------------------------------
+VACCINES AT 15–16 YEARS
+--------------------------------------------------------------------------
+28. Td Booster
+    - Final Tetanus-diphtheria booster
+    - Dose: 0.5 ml intramuscular
+
+==========================================================================
+PREGNANT WOMEN — VACCINATION SCHEDULE
+==========================================================================
+
+All vaccines for pregnant women are FREE at government health facilities.
+
+TT/Td VACCINATION IN PREGNANCY:
+- TT-1: Give as early as possible in pregnancy (first contact with health system)
+- TT-2: Give 4 weeks after TT-1
+- TT Booster: If the woman received 2 TT doses in a previous pregnancy within the last 3 years
+              — give 1 booster dose only
+
+PURPOSE: Protects mother and baby against tetanus (Neonatal Tetanus is life-threatening)
+
+Td vaccine is now recommended over TT in many states — both protect against tetanus.
+
+IMPORTANT FOR PREGNANT WOMEN:
+- Get vaccinated as EARLY as possible in pregnancy
+- Do not delay vaccination due to first trimester concerns — TT/Td is safe throughout pregnancy
+- Record the vaccination date in the Mother-Child Protection (MCP) card
+
+==========================================================================
+PULSE POLIO IMMUNIZATION (National Polio Immunisation Days)
+==========================================================================
+- Given 2 drops oral to ALL children under 5 on National Immunization Day (NID)
+- Held on Sundays in January/February each year
+- ADDITIONAL to routine OPV schedule — does not replace it
+- India was declared POLIO FREE in 2014 — must maintain high coverage
+
+==========================================================================
+IMPORTANT INFORMATION ABOUT VACCINATION
+==========================================================================
+
+AFTER VACCINATION — WHAT IS NORMAL:
+- Mild fever for 1–2 days — give paracetamol, increase fluids
+- Redness, slight swelling, tenderness at injection site — normal, goes away in 2–3 days
+- BCG produces a small lump that ulcerates and heals over 6–8 weeks — THIS IS NORMAL
+- Baby may be fussy and cry more — this is normal for 1–2 days
+
+WHEN TO SEEK CARE AFTER VACCINATION:
+- High fever (above 39.5°C) persisting beyond 2 days
+- Excessive swelling at injection site (more than 3 cm)
+- Child seems very unwell, unusually drowsy, stops feeding
+- Convulsions after vaccination (rare — report immediately)
+
+CONTRAINDICATIONS (reasons NOT to vaccinate on that day):
+- Severe illness on the day of vaccination — reschedule, do not delay vaccination permanently
+- Severe allergic reaction to a previous dose of the same vaccine
+- Live vaccines (OPV, MR) should be postponed if child on immune-suppressing medicines
+
+MYTH BUSTING:
+- Myth: "Vaccines cause the disease they protect against" — FALSE (vaccines use killed or weakened germs)
+- Myth: "Too many vaccines weaken the immune system" — FALSE (children handle millions of germs daily)
+- Myth: "Natural infection gives better immunity" — FALSE (infection risks serious complications)
+- Myth: "If my child is healthy they don't need vaccines" — FALSE (vaccines prevent the infection from occurring)
+- Myth: "Vaccines contain harmful preservatives" — The quantities are minuscule and proven safe
+
+MISSED VACCINES — CATCH-UP GUIDANCE:
+- It is NEVER too late to vaccinate
+- Missed vaccines should be given as soon as possible
+- You do NOT need to restart the schedule if vaccines are delayed
+- Ask your ASHA worker, ANM or PHC about catch-up vaccination
+
+THE MCP (MOTHER-CHILD PROTECTION) CARD:
+- Keep the MCP card safe — it records all vaccinations for your child
+- Bring it to every vaccination session
+- It is your child's vaccination passport
+- Lost MCP card: Get a new one from your PHC/ASHA worker
+
+==========================================================================
+VILLAGE-LEVEL IMMUNIZATION RESOURCES
+==========================================================================
+
+WHO TO CONTACT FOR VACCINATION:
+1. ASHA (Accredited Social Health Activist) worker — your nearest village health worker
+   - Will inform you of upcoming vaccination days
+   - Can accompany you to the vaccination session
+   - Provides health education about vaccines
+
+2. ANM (Auxiliary Nurse Midwife) — conducts vaccination at sub-centre level
+   - Responsible for vaccination in 3–5 villages
+   - Holds regular vaccination sessions at the sub-centre
+
+3. Anganwadi worker — vaccination sessions also held at Anganwadi centres
+
+4. PHC (Primary Health Centre) — fixed vaccination every Tuesday and Friday
+   - Provides all vaccines in the National Immunization Schedule free of charge
+
+IMMUNIZATION HELPLINE: 1800-11-1565 (Toll free, available 9am–6pm)

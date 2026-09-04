@@ -1,14 +1,17 @@
 """
 Sehat Saathi - Local Language Translator (No API Key Required)
 ==============================================================
-Detects Hindi and Kannada using Unicode script ranges.
+Detects languages using Unicode script ranges + transliteration keywords.
 Provides hardcoded phrase-level translations for all Sehat Saathi responses
-so the app works fully in Hindi and Kannada without Watson Translator.
+so the app works fully offline for hi, kn, ta, te, bn without any API key.
 
 Supported in mock/demo mode:
-  - en  English  (passthrough)
-  - hi  Hindi    (Devanagari script detection + full translated responses)
-  - kn  Kannada  (Kannada script detection + full translated responses)
+  - en  English   (passthrough)
+  - hi  Hindi     (Devanagari script + keywords)
+  - kn  Kannada   (Kannada script + keywords)
+  - ta  Tamil     (Tamil script + keywords)
+  - te  Telugu    (Telugu script + keywords)
+  - bn  Bengali   (Bengali script + keywords)
 """
 import re
 import logging
@@ -18,24 +21,39 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Unicode script ranges for script-based language detection
 # ---------------------------------------------------------------------------
-# Devanagari: U+0900–U+097F (Hindi, Marathi, Sanskrit)
-_DEVANAGARI = re.compile(r"[\u0900-\u097F]")
-# Kannada:    U+0C80–U+0CFF
-_KANNADA_SCRIPT = re.compile(r"[\u0C80-\u0CFF]")
+_DEVANAGARI    = re.compile(r"[\u0900-\u097F]")   # Hindi, Marathi
+_KANNADA_SCRIPT= re.compile(r"[\u0C80-\u0CFF]")   # Kannada
+_TAMIL_SCRIPT  = re.compile(r"[\u0B80-\u0BFF]")   # Tamil
+_TELUGU_SCRIPT = re.compile(r"[\u0C00-\u0C7F]")   # Telugu
+_BENGALI_SCRIPT= re.compile(r"[\u0980-\u09FF]")   # Bengali
 
-# Common Hindi transliteration keywords (Latin script)
+# Transliteration keyword patterns
 _HINDI_LATIN = re.compile(
     r"\b(bukhaar|dard|sar\s*dard|pet\s*dard|khoon|saans|bacha|baccha|"
     r"hafte|mahine|garbhwati|dawai|aspatal|bukhar|ulti|daast|khansi|"
     r"mujhe|mera|meri|hai|hain|ho\s*raha|nahi|nahin|kya|kahan|kaun)\b",
     re.IGNORECASE,
 )
-
-# Common Kannada transliteration keywords (Latin script)
 _KANNADA_LATIN = re.compile(
     r"\b(jwara|novu|talaanu|hecchu|maduve|magu|makkalu|rasthe|aspatre|"
     r"doddavaru|hotte|shirasunovu|khansi|vomiti|nanna|nimma|avaru|idu|"
     r"hogi|onde|eradu|mooru|varsha|tingalu|vaara)\b",
+    re.IGNORECASE,
+)
+_TAMIL_LATIN = re.compile(
+    r"\b(kaichal|thalaivaali|vayiru\s*vali|irumal|vanthi|pokkuri|"
+    r"kuzhanthai|karbham|thaai|maruthuvamanaai|asupathri|enakku|"
+    r"naan|avan|aval|enge|enna|eppo)\b",
+    re.IGNORECASE,
+)
+_TELUGU_LATIN = re.compile(
+    r"\b(jwaram|noppi|tala\s*noppi|దగ్గు|vaccae|vanta|bathukari|"
+    r"pilladu|garbham|doctor|asupathri|naku|nenu|meeru|ikkade|emi)\b",
+    re.IGNORECASE,
+)
+_BENGALI_LATIN = re.compile(
+    r"\b(jhor|jwor|mathavytha|matha\s*bytha|pet\s*bytha|kashi|bomi|"
+    r"diariya|shishu|gorbhoboти|daktar|hospital|amar|ami|apni|kothay|ki)\b",
     re.IGNORECASE,
 )
 
@@ -43,20 +61,38 @@ _KANNADA_LATIN = re.compile(
 def detect_language(text: str) -> str:
     """
     Detect language from text using Unicode script ranges + transliteration hints.
-    Returns ISO 639-1 code: 'hi', 'kn', or 'en'.
+    Returns ISO 639-1 code: 'hi', 'kn', 'ta', 'te', 'bn', or 'en'.
     """
     if _DEVANAGARI.search(text):
-        logger.debug("Detected: Hindi (Devanagari script)")
+        logger.debug("Detected: Hindi (Devanagari)")
         return "hi"
+    if _TAMIL_SCRIPT.search(text):
+        logger.debug("Detected: Tamil")
+        return "ta"
+    if _BENGALI_SCRIPT.search(text):
+        logger.debug("Detected: Bengali")
+        return "bn"
+    if _TELUGU_SCRIPT.search(text):
+        logger.debug("Detected: Telugu")
+        return "te"
     if _KANNADA_SCRIPT.search(text):
-        logger.debug("Detected: Kannada (Kannada script)")
+        logger.debug("Detected: Kannada")
         return "kn"
     if _HINDI_LATIN.search(text):
-        logger.debug("Detected: Hindi (transliteration keywords)")
+        logger.debug("Detected: Hindi (transliteration)")
         return "hi"
     if _KANNADA_LATIN.search(text):
-        logger.debug("Detected: Kannada (transliteration keywords)")
+        logger.debug("Detected: Kannada (transliteration)")
         return "kn"
+    if _TAMIL_LATIN.search(text):
+        logger.debug("Detected: Tamil (transliteration)")
+        return "ta"
+    if _TELUGU_LATIN.search(text):
+        logger.debug("Detected: Telugu (transliteration)")
+        return "te"
+    if _BENGALI_LATIN.search(text):
+        logger.debug("Detected: Bengali (transliteration)")
+        return "bn"
     return "en"
 
 
@@ -311,7 +347,243 @@ KANNADA = {
     ),
 }
 
-LANG_STRINGS = {"hi": HINDI, "kn": KANNADA}
+# ---------------------------------------------------------------------------
+# Localised UI strings — Tamil
+# ---------------------------------------------------------------------------
+TAMIL = {
+    "disclaimer": (
+        "\n\n_நான் ஒரு AI உதவியாளர், மருத்துவர் அல்ல. "
+        "நோய் கண்டறிதல் அல்லது சிகிச்சைக்கு தயவுசெய்து ஒரு சுகாதார நிபுணரை அணுகவும்._"
+    ),
+    "fallback": (
+        "வணக்கம்! நான் **சேஹத் சாத்தி** — உங்கள் சுகாதார விழிப்புணர்வு உதவியாளர் 🏥\n\n"
+        "நான் இதில் உதவ முடியும்:\n"
+        "- 🤒 **அறிகுறி வழிகாட்டுதல்** — உங்கள் அறிகுறிகளை விவரிக்கவும்\n"
+        "- 💉 **தடுப்பூசி அட்டவணை** — குழந்தையின் வயது அல்லது கர்ப்ப நிலை கூறவும்\n"
+        "- 🏥 **அருகிலுள்ள மருத்துவமனை கண்டறியவும்** — பின்கோடு அல்லது நகரம் கூறவும்\n"
+        "- 📚 **சுகாதார தகவல்** — காய்ச்சல், ORS, மலேரியா, TB பற்றி கேளுங்கள்\n\n"
+        "**முயற்சிக்கவும்:** *'என் குழந்தைக்கு 6 வாரம்'* அல்லது *'எனக்கு 2 நாளாக காய்ச்சல்'*"
+    ),
+    "emergency_prefix": "🚨 **இது அவசரநிலை — உடனடியாக நடவடிக்கை எடுங்கள்!**\n\n📞 **108 இப்போதே அழையுங்கள்** (இலவச ஆம்புலன்ஸ்)\n\n",
+    "triage_tier1": "✅ வீட்டில் கவனிக்கவும்",
+    "triage_tier2": "🟡 சில நாட்களில் மருத்துவரை சந்திக்கவும்",
+    "triage_tier3": "🔴 இப்போதே அவசர சிகிச்சை பெறவும்",
+    "triage_tip_tier1": "💧 **வீட்டு கவனிப்பு:** ஓய்வு எடுங்கள், நிறைய தண்ணீர் குடிக்கவும்.",
+    "triage_tip_tier2": "💡 **ஆலோசனை:** அருகிலுள்ள PHCக்கு செல்லுங்கள் — பரிசோதனை மற்றும் மருந்து இலவசம்.",
+    "triage_tip_tier3": "⚠️ **முக்கியம்:** மார்பு வலி அல்லது சுவாச சிரமம் இருந்தால் — உடனே **108** அழையுங்கள்.",
+    "vaccine_free_note": "💡 தேசிய தடுப்பூசி திட்டத்தின் அனைத்து தடுப்பூசிகளும் அரசு மருத்துவமனைகளில் **இலவசம்**.",
+    "facility_tip": "💡 அரசு PHCயில் **இலவச ஆலோசனை மற்றும் மருந்துகள்** கிடைக்கும்.",
+    "facility_helpline": "📞 **தேசிய சுகாதார உதவி எண்: 104**",
+    "ors": (
+        "**ORS (வாய்வழி நீரேற்றம் கரைசல்)** வயிற்றுப்போக்கு அல்லது வாந்தியால் ஏற்படும் நீரிழப்புக்கு பயன்படுகிறது.\n\n"
+        "**வீட்டில் ORS தயாரிக்கும் முறை:**\n"
+        "- 1 லிட்டர் சுத்தமான/கொதிக்கவைத்த தண்ணீர்\n"
+        "- 6 தேக்கரண்டி சர்க்கரை\n"
+        "- ½ தேக்கரண்டி உப்பு\n"
+        "நன்கு கலந்து கொஞ்சம் கொஞ்சமாக கொடுங்கள். ORS பொட்டலங்கள் அரசு மையங்களில் **இலவசம்**.\n\n"
+        "_ஆதாரம்: WHO வாய்வழி நீரேற்றம் சிகிச்சை வழிகாட்டுதல்கள்_"
+    ),
+    "malaria": (
+        "**மலேரியா** கொசு கடியால் பரவும் நோய்.\n\n"
+        "**அறிகுறிகள்:** நடுங்கலுடன் காய்ச்சல், தலைவலி, உடல் வலி.\n\n"
+        "**என்ன செய்வது:**\n"
+        "- அருகிலுள்ள PHCயில் உடனே இரத்த பரிசோதனை செய்யுங்கள் (இலவசம்)\n"
+        "- தாமதிக்காதீர்கள் — சிகிச்சையின்றி ஆபத்தானது\n"
+        "- கொசு வலையைப் பயன்படுத்துங்கள்\n\n"
+        "**சிகிச்சை அரசு மையங்களில் இலவசம்.**\n\n"
+        "_ஆதாரம்: WHO மலேரியா வழிகாட்டுதல்கள்_"
+    ),
+    "tb": (
+        "**TB (காசநோய்)** குணப்படுத்தக்கூடிய நோய், முக்கியமாக நுரையீரலை பாதிக்கிறது.\n\n"
+        "**அறிகுறிகள்:** 2 வாரத்திற்கும் அதிகமான இருமல், சளியில் இரத்தம், இரவு வியர்வை, எடை குறைவு.\n\n"
+        "**முக்கியமான விஷயங்கள்:**\n"
+        "- அரசு மையங்களில் இலவச பரிசோதனை மற்றும் சிகிச்சை\n"
+        "- சிகிச்சை 6 மாதம் — நடுவில் நிறுத்தாதீர்கள்\n\n"
+        "_ஆதாரம்: MoHFW இந்தியா TB வழிகாட்டுதல்கள்_"
+    ),
+    "dengue": (
+        "**டெங்கு** ஏடிஸ் கொசு கடியால் பரவும் வைரஸ் காய்ச்சல்.\n\n"
+        "**அறிகுறிகள்:** திடீர் அதிக காய்ச்சல், கண்களுக்கு பின்னால் வலி, மூட்டு வலி, தடிப்பு.\n\n"
+        "**ஆபத்தான அறிகுறிகள்** (உடனே மருத்துவமனை செல்லுங்கள்):\n"
+        "- மூக்கு/ஈறுகளில் இரத்தம்\n"
+        "- கடுமையான வயிற்று வலி\n\n"
+        "**தடுப்பு:** வீட்டிற்கு அருகில் நீர் தேங்காமல் பார்க்கவும்.\n\n"
+        "_ஆதாரம்: WHO டெங்கு வழிகாட்டுதல்கள்_"
+    ),
+    "anemia": (
+        "**இரத்த சோகை** என்பது இரத்தம்/ஹீமோகுளோபின் குறைவு.\n\n"
+        "**அறிகுறிகள்:** சோர்வு, பலவீனம், வெளிர் தோல், தலைச்சுற்றல்.\n\n"
+        "**உதவுவது என்ன:**\n"
+        "- இரும்புச்சத்து உணவுகள்: கீரை, பருப்பு, வெல்லம், பேரீச்சை\n"
+        "- IFA மாத்திரைகள் — PHCயில் இலவசம்\n\n"
+        "_ஆதாரம்: MoHFW தேசிய இரும்பு பிளஸ் திட்டம்_"
+    ),
+}
+
+# ---------------------------------------------------------------------------
+# Localised UI strings — Telugu
+# ---------------------------------------------------------------------------
+TELUGU = {
+    "disclaimer": (
+        "\n\n_నేను AI సహాయకుడిని, డాక్టర్ కాదు. "
+        "రోగనిర్ధారణ లేదా చికిత్స కోసం దయచేసి ఆరోగ్య నిపుణుడిని సంప్రదించండి._"
+    ),
+    "fallback": (
+        "నమస్కారం! నేను **సేహత్ సాథి** — మీ ఆరోగ్య అవగాహన సహాయకుడు 🏥\n\n"
+        "నేను ఇందులో సహాయపడగలను:\n"
+        "- 🤒 **లక్షణ మార్గదర్శకత్వం** — మీ లక్షణాలు వివరించండి\n"
+        "- 💉 **వ్యాక్సిన్ షెడ్యూల్** — పిల్లల వయస్సు లేదా గర్భ దశ చెప్పండి\n"
+        "- 🏥 **దగ్గరలో ఆసుపత్రి కనుగొనండి** — పిన్‌కోడ్ లేదా నగరం చెప్పండి\n"
+        "- 📚 **ఆరోగ్య సమాచారం** — జ్వరం, ORS, మలేరియా, TB గురించి అడగండి\n\n"
+        "**ప్రయత్నించండి:** *'నా బిడ్డకు 6 వారాలు'* లేదా *'నాకు 2 రోజులుగా జ్వరం'*"
+    ),
+    "emergency_prefix": "🚨 **ఇది అత్యవసర పరిస్థితి — వెంటనే చర్య తీసుకోండి!**\n\n📞 **108కు ఇప్పుడే కాల్ చేయండి** (ఉచిత అంబులెన్స్)\n\n",
+    "triage_tier1": "✅ ఇంట్లో సంరక్షణ చేసుకోండి",
+    "triage_tier2": "🟡 కొన్ని రోజుల్లో డాక్టర్‌ను కలవండి",
+    "triage_tier3": "🔴 వెంటనే అత్యవసర సంరక్షణ పొందండి",
+    "triage_tip_tier1": "💧 **ఇంటి సంరక్షణ:** విశ్రాంతి తీసుకోండి, చాలా నీళ్ళు తాగండి.",
+    "triage_tip_tier2": "💡 **సూచన:** దగ్గరలోని PHCకి వెళ్ళండి — పరీక్ష మరియు మందు ఉచితం.",
+    "triage_tip_tier3": "⚠️ **ముఖ్యం:** ఛాతీ నొప్పి లేదా శ్వాస తీసుకోవడం కష్టంగా ఉంటే — వెంటనే **108** కు కాల్ చేయండి.",
+    "vaccine_free_note": "💡 జాతీయ టీకా కార్యక్రమంలోని అన్ని టీకాలు ప్రభుత్వ ఆరోగ్య కేంద్రాలలో **ఉచితం**.",
+    "facility_tip": "💡 ప్రభుత్వ PHCలో **ఉచిత సంప్రదింపులు మరియు మందులు** లభిస్తాయి.",
+    "facility_helpline": "📞 **జాతీయ ఆరోగ్య హెల్ప్‌లైన్: 104**",
+    "ors": (
+        "**ORS (నోటి ద్వారా రీహైడ్రేషన్ సొల్యూషన్)** విరేచనాలు లేదా వాంతి వల్ల నిర్జలీకరణానికి ఉపయోగిస్తారు.\n\n"
+        "**ఇంట్లో ORS తయారు చేసే విధానం:**\n"
+        "- 1 లీటర్ శుభ్రమైన/మరిగించిన నీళ్ళు\n"
+        "- 6 టీ చెంచాల చక్కెర\n"
+        "- ½ టీ చెంచాల ఉప్పు\n"
+        "బాగా కలిపి కొంచెం కొంచెం ఇవ్వండి. ORS పాకెట్లు ప్రభుత్వ కేంద్రాలలో **ఉచితం**.\n\n"
+        "_మూలం: WHO నోటి రీహైడ్రేషన్ థెరపీ మార్గదర్శకాలు_"
+    ),
+    "malaria": (
+        "**మలేరియా** దోమ కాటు ద్వారా వ్యాపించే వ్యాధి.\n\n"
+        "**లక్షణాలు:** వణుకుతో జ్వరం, తలనొప్పి, శరీర నొప్పి.\n\n"
+        "**ఏం చేయాలి:**\n"
+        "- దగ్గరలోని PHCలో వెంటనే రక్త పరీక్ష చేయించుకోండి (ఉచితం)\n"
+        "- ఆలస్యం చేయకండి — చికిత్స లేకుండా ప్రమాదకరం\n"
+        "- దోమతెర ఉపయోగించండి\n\n"
+        "**చికిత్స ప్రభుత్వ కేంద్రాలలో ఉచితం.**\n\n"
+        "_మూలం: WHO మలేరియా మార్గదర్శకాలు_"
+    ),
+    "tb": (
+        "**TB (క్షయ)** నయమయ్యే వ్యాధి, ప్రధానంగా ఊపిరితిత్తులను ప్రభావితం చేస్తుంది.\n\n"
+        "**లక్షణాలు:** 2 వారాలకు మించిన దగ్గు, రక్తపు కఫం, రాత్రి చెమటలు, బరువు తగ్గడం.\n\n"
+        "**ముఖ్యమైన విషయాలు:**\n"
+        "- ప్రభుత్వ కేంద్రాలలో ఉచిత పరీక్ష మరియు చికిత్స\n"
+        "- చికిత్స 6 నెలలు — మధ్యలో ఆపకండి\n\n"
+        "_మూలం: MoHFW భారత TB మార్గదర్శకాలు_"
+    ),
+    "dengue": (
+        "**డెంగ్యూ** ఏడిస్ దోమ కాటు ద్వారా వ్యాపించే వైరల్ జ్వరం.\n\n"
+        "**లక్షణాలు:** హఠాత్తుగా అధిక జ్వరం, కళ్ళ వెనుక నొప్పి, కీళ్ళ నొప్పి, దద్దుర్లు.\n\n"
+        "**ప్రమాద సంకేతాలు** (వెంటనే ఆసుపత్రికి వెళ్ళండి):\n"
+        "- ముక్కు/చిగుళ్ళ నుండి రక్తం\n"
+        "- తీవ్రమైన పొట్ట నొప్పి\n\n"
+        "**నివారణ:** ఇంటి దగ్గర నీళ్ళు నిలవ ఉండకుండా చూసుకోండి.\n\n"
+        "_మూలం: WHO డెంగ్యూ మార్గదర్శకాలు_"
+    ),
+    "anemia": (
+        "**రక్తహీనత** అంటే రక్తం/హీమోగ్లోబిన్ తక్కువ.\n\n"
+        "**లక్షణాలు:** అలసట, బలహీనత, పాలిపోయిన చర్మం, తలతిరగడం.\n\n"
+        "**ఏది సహాయపడుతుంది:**\n"
+        "- ఇనుముతో కూడిన ఆహారం: ఆకుకూరలు, పప్పులు, బెల్లం, ఖర్జూరం\n"
+        "- IFA మాత్రలు — PHCలో ఉచితం\n\n"
+        "_మూలం: MoHFW జాతీయ ఐరన్ ప్లస్ చొరవ_"
+    ),
+}
+
+# ---------------------------------------------------------------------------
+# Localised UI strings — Bengali
+# ---------------------------------------------------------------------------
+BENGALI = {
+    "disclaimer": (
+        "\n\n_আমি একজন AI সহকারী, ডাক্তার নই। "
+        "রোগ নির্ণয় বা চিকিৎসার জন্য অনুগ্রহ করে একজন স্বাস্থ্য বিশেষজ্ঞের সাথে পরামর্শ করুন।_"
+    ),
+    "fallback": (
+        "নমস্কার! আমি **সেহত সাথি** — আপনার স্বাস্থ্য সচেতনতার সহকারী 🏥\n\n"
+        "আমি এই বিষয়গুলিতে সাহায্য করতে পারি:\n"
+        "- 🤒 **লক্ষণ নির্দেশনা** — আপনার লক্ষণগুলি বর্ণনা করুন\n"
+        "- 💉 **টিকাদান সময়সূচী** — শিশুর বয়স বা গর্ভাবস্থার ধাপ বলুন\n"
+        "- 🏥 **কাছের হাসপাতাল খুঁজুন** — পিনকোড বা শহর বলুন\n"
+        "- 📚 **স্বাস্থ্য তথ্য** — জ্বর, ORS, ম্যালেরিয়া, TB সম্পর্কে জিজ্ঞেস করুন\n\n"
+        "**চেষ্টা করুন:** *'আমার শিশুর ৬ সপ্তাহ'* বা *'আমার ২ দিন ধরে জ্বর'*"
+    ),
+    "emergency_prefix": "🚨 **এটি জরুরি অবস্থা — তাৎক্ষণিক ব্যবস্থা নিন!**\n\n📞 **এখনই ১০৮ নম্বরে ফোন করুন** (বিনামূল্যে অ্যাম্বুলেন্স)\n\n",
+    "triage_tier1": "✅ বাড়িতে যত্ন নিন",
+    "triage_tier2": "🟡 কয়েক দিনের মধ্যে ডাক্তার দেখান",
+    "triage_tier3": "🔴 এখনই জরুরি চিকিৎসা নিন",
+    "triage_tip_tier1": "💧 **ঘরোয়া যত্ন:** বিশ্রাম নিন, প্রচুর পানি পান করুন।",
+    "triage_tip_tier2": "💡 **পরামর্শ:** কাছের PHC-তে যান — পরীক্ষা ও ওষুধ বিনামূল্যে।",
+    "triage_tip_tier3": "⚠️ **গুরুত্বপূর্ণ:** বুকে ব্যথা বা শ্বাস নিতে কষ্ট হলে — এখনই **১০৮** নম্বরে ফোন করুন।",
+    "vaccine_free_note": "💡 জাতীয় টিকাদান কার্যক্রমের সব টিকা সরকারি স্বাস্থ্য কেন্দ্রে **বিনামূল্যে**।",
+    "facility_tip": "💡 সরকারি PHC-তে **বিনামূল্যে পরামর্শ ও ওষুধ** পাওয়া যায়।",
+    "facility_helpline": "📞 **জাতীয় স্বাস্থ্য হেল্পলাইন: ১০৪**",
+    "ors": (
+        "**ORS (মুখে খাওয়ার রিহাইড্রেশন দ্রবণ)** ডায়রিয়া বা বমির কারণে পানিশূন্যতার জন্য ব্যবহৃত হয়।\n\n"
+        "**বাড়িতে ORS তৈরির পদ্ধতি:**\n"
+        "- ১ লিটার পরিষ্কার/ফুটানো পানি\n"
+        "- ৬ চা চামচ চিনি\n"
+        "- ½ চা চামচ লবণ\n"
+        "ভালো করে মিশিয়ে অল্প অল্প করে দিন। ORS প্যাকেট সরকারি কেন্দ্রে **বিনামূল্যে**।\n\n"
+        "_উৎস: WHO মুখে রিহাইড্রেশন থেরাপি নির্দেশিকা_"
+    ),
+    "malaria": (
+        "**ম্যালেরিয়া** মশার কামড়ে ছড়ায়।\n\n"
+        "**লক্ষণ:** কাঁপুনিসহ জ্বর, মাথাব্যথা, শরীর ব্যথা।\n\n"
+        "**কী করবেন:**\n"
+        "- কাছের PHC-তে তাৎক্ষণিক রক্ত পরীক্ষা করান (বিনামূল্যে)\n"
+        "- দেরি করবেন না — চিকিৎসা না করলে বিপজ্জনক\n"
+        "- মশারি ব্যবহার করুন\n\n"
+        "**চিকিৎসা সরকারি কেন্দ্রে বিনামূল্যে।**\n\n"
+        "_উৎস: WHO ম্যালেরিয়া নির্দেশিকা_"
+    ),
+    "tb": (
+        "**যক্ষ্মা (TB)** একটি নিরাময়যোগ্য রোগ যা মূলত ফুসফুসকে প্রভাবিত করে।\n\n"
+        "**লক্ষণ:** ২ সপ্তাহের বেশি কাশি, কফে রক্ত, রাতে ঘাম, ওজন কমা।\n\n"
+        "**গুরুত্বপূর্ণ বিষয়:**\n"
+        "- সরকারি কেন্দ্রে বিনামূল্যে পরীক্ষা ও চিকিৎসা\n"
+        "- চিকিৎসা ৬ মাস — মাঝপথে বন্ধ করবেন না\n\n"
+        "_উৎস: MoHFW ভারত TB নির্দেশিকা_"
+    ),
+    "dengue": (
+        "**ডেঙ্গু** এডিস মশার কামড়ে ছড়ানো ভাইরাল জ্বর।\n\n"
+        "**লক্ষণ:** হঠাৎ তীব্র জ্বর, চোখের পিছনে ব্যথা, গাঁটে ব্যথা, র‍্যাশ।\n\n"
+        "**বিপদ সংকেত** (তাৎক্ষণিক হাসপাতালে যান):\n"
+        "- নাক/মাড়ি থেকে রক্ত\n"
+        "- তীব্র পেটব্যথা\n\n"
+        "**প্রতিরোধ:** বাড়ির কাছে পানি জমতে দেবেন না।\n\n"
+        "_উৎস: WHO ডেঙ্গু নির্দেশিকা_"
+    ),
+    "anemia": (
+        "**রক্তশূন্যতা** মানে রক্ত/হিমোগ্লোবিন কম।\n\n"
+        "**লক্ষণ:** ক্লান্তি, দুর্বলতা, ফ্যাকাশে ত্বক, মাথা ঘোরা।\n\n"
+        "**কী সাহায্য করে:**\n"
+        "- আয়রন সমৃদ্ধ খাবার: সবুজ শাকসবজি, ডাল, গুড়, খেজুর\n"
+        "- IFA ট্যাবলেট — PHC-তে বিনামূল্যে\n\n"
+        "_উৎস: MoHFW জাতীয় আয়রন প্লাস উদ্যোগ_"
+    ),
+}
+
+LANG_STRINGS = {"hi": HINDI, "kn": KANNADA, "ta": TAMIL, "te": TELUGU, "bn": BENGALI}
+
+# ISO 639-1 code → human-readable language name (used by Groq translator prompts)
+LANGUAGE_NAMES = {
+    "hi": "Hindi",
+    "kn": "Kannada",
+    "ta": "Tamil",
+    "te": "Telugu",
+    "bn": "Bengali",
+    "mr": "Marathi",
+    "gu": "Gujarati",
+    "pa": "Punjabi",
+    "ml": "Malayalam",
+    "ur": "Urdu",
+    "or": "Odia",
+    "as": "Assamese",
+    "en": "English",
+}
 
 
 def get_strings(lang: str) -> dict:

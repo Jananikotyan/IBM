@@ -15,7 +15,7 @@ from typing import Optional
 
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain.schema import Document
+from langchain_core.documents import Document
 
 from app.config import settings
 from app.rag.document_loader import load_documents, chunk_documents
