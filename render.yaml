@@ -1,0 +1,35 @@
+services:
+  # ── Backend (FastAPI) ─────────────────────────────────────────────────────
+  - type: web
+    name: sehat-saathi-backend
+    runtime: python
+    rootDir: sehat-saathi
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.api.routes:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: MOCK_MODE
+        value: true
+      - key: OLLAMA_MODE
+        value: false
+      - key: APP_ENV
+        value: production
+      - key: VECTOR_DB_PATH
+        value: ./data/vector_store
+      - key: DOCS_PATH
+        value: ./data/knowledge_base
+      - key: GROQ_API_KEY
+        sync: false   # You fill this in Render dashboard
+
+  # ── Frontend (Streamlit) ──────────────────────────────────────────────────
+  - type: web
+    name: sehat-saathi-frontend
+    runtime: python
+    rootDir: sehat-saathi/frontend
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run streamlit_app.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: API_BASE_URL
+        sync: false   # Set this to your backend Render URL after backend deploys
+      - key: MOCK_MODE
+        value: true
