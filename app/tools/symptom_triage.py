@@ -138,8 +138,8 @@ def _score_symptoms(symptom_text: str) -> tuple[int, list[str]]:
                 break  # One match per rule group is enough
 
     if highest_tier == 0:
-        highest_tier = 1  # Default to self-care if no strong match
-        matched_reasons = ["No high-risk patterns detected"]
+        highest_tier = 1  # Default to Tier 1 (self-care) when no patterns match
+        matched_reasons = ["No high-risk patterns detected — monitor symptoms and consult a doctor if they worsen"]
 
     return highest_tier, matched_reasons
 

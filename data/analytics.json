@@ -1,0 +1,114 @@
+{
+  "queries": [
+    {
+      "ts": "2026-09-20T13:32:02.649258+00:00",
+      "date": "2026-09-20",
+      "session_id": "399a1473-d429-49da-8ac1-f1e170c44f34",
+      "lang": "en",
+      "category": "symptom",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": null,
+      "msg_len": 36
+    },
+    {
+      "ts": "2026-09-20T13:33:38.522199+00:00",
+      "date": "2026-09-20",
+      "session_id": "399a1473-d429-49da-8ac1-f1e170c44f34",
+      "lang": "hi",
+      "category": "general",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": null,
+      "msg_len": 29
+    },
+    {
+      "ts": "2026-09-20T14:39:16.955222+00:00",
+      "date": "2026-09-20",
+      "session_id": "48a8994c-c848-469d-87f8-9e662f54e7e3",
+      "lang": "pa",
+      "category": "facility",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": "Mumbai",
+      "msg_len": 37
+    },
+    {
+      "ts": "2026-09-20T14:40:43.590195+00:00",
+      "date": "2026-09-20",
+      "session_id": "48a8994c-c848-469d-87f8-9e662f54e7e3",
+      "lang": "pa",
+      "category": "facility",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": "Mumbai",
+      "msg_len": 37
+    },
+    {
+      "ts": "2026-09-20T14:41:29.972735+00:00",
+      "date": "2026-09-20",
+      "session_id": "48a8994c-c848-469d-87f8-9e662f54e7e3",
+      "lang": "pa",
+      "category": "symptom",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": null,
+      "msg_len": 32
+    },
+    {
+      "ts": "2026-09-20T14:42:36.851269+00:00",
+      "date": "2026-09-20",
+      "session_id": "48a8994c-c848-469d-87f8-9e662f54e7e3",
+      "lang": "en",
+      "category": "symptom",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": null,
+      "msg_len": 21
+    },
+    {
+      "ts": "2026-09-20T14:43:06.745617+00:00",
+      "date": "2026-09-20",
+      "session_id": "48a8994c-c848-469d-87f8-9e662f54e7e3",
+      "lang": "pa",
+      "category": "facility",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": "me",
+      "msg_len": 21
+    },
+    {
+      "ts": "2026-09-20T14:46:19.166126+00:00",
+      "date": "2026-09-20",
+      "session_id": "48a8994c-c848-469d-87f8-9e662f54e7e3",
+      "lang": "pa",
+      "category": "facility",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": null,
+      "msg_len": 16
+    },
+    {
+      "ts": "2026-09-20T14:46:49.051553+00:00",
+      "date": "2026-09-20",
+      "session_id": "48a8994c-c848-469d-87f8-9e662f54e7e3",
+      "lang": "en",
+      "category": "general",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": null,
+      "msg_len": 17
+    },
+    {
+      "ts": "2026-09-20T14:46:59.304889+00:00",
+      "date": "2026-09-20",
+      "session_id": "48a8994c-c848-469d-87f8-9e662f54e7e3",
+      "lang": "en",
+      "category": "vaccination",
+      "triage_tier": null,
+      "is_emergency": false,
+      "location": null,
+      "msg_len": 20
+    }
+  ]
+}

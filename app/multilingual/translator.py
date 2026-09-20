@@ -129,7 +129,11 @@ class LanguageTranslator:
                 source=source_lang,
                 target=target_lang,
             ).get_result()
-            translated = response["translations"][0]["translation"]
+            translations = response.get("translations", [])
+            if not translations:
+                logger.warning("Watson Translator returned empty translations for %s->%s", source_lang, target_lang)
+                return text
+            translated = translations[0].get("translation", text)
             logger.debug("Translated %s -> %s: %s...", source_lang, target_lang, translated[:50])
             return translated
         except Exception as e:

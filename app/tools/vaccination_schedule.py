@@ -200,6 +200,11 @@ def vaccination_schedule_tool(query: str) -> str:
     )
 
 
+# Use consistent week conversion constants throughout
+_WEEKS_PER_MONTH = 4.348   # 52.1429 / 12
+_WEEKS_PER_YEAR = 52.1429  # 365.25 / 7
+
+
 def _parse_age_to_weeks(text: str) -> float | None:
     """Parse age from text and convert to weeks."""
     import re
@@ -212,12 +217,12 @@ def _parse_age_to_weeks(text: str) -> float | None:
     # Match "X months"
     m = re.search(r"(\d+(?:\.\d+)?)\s*month", text)
     if m:
-        return float(m.group(1)) * 4.33  # approximate weeks per month
+        return float(m.group(1)) * _WEEKS_PER_MONTH
 
     # Match "X years"
     m = re.search(r"(\d+(?:\.\d+)?)\s*year", text)
     if m:
-        return float(m.group(1)) * 52
+        return float(m.group(1)) * _WEEKS_PER_YEAR
 
     # Match "X days" (newborn)
     m = re.search(r"(\d+(?:\.\d+)?)\s*day", text)
@@ -232,7 +237,7 @@ def _get_child_vaccine_info(age_weeks: float) -> str:
     result = _find_next_vaccines_for_child(age_weeks)
     lines = []
 
-    age_months = age_weeks / 4.33
+    age_months = age_weeks / _WEEKS_PER_MONTH
     if age_months < 1:
         age_display = f"{int(age_weeks * 7)} days"
     elif age_months < 24:

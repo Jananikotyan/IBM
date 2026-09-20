@@ -67,8 +67,11 @@ def build_vector_store(force_rebuild: bool = False) -> Chroma:
             embedding_function=embeddings,
             persist_directory=vector_db_path,
         )
-        count = _vector_store._collection.count()
-        logger.info("Vector store loaded. Document chunks: %d", count)
+        try:
+            count = _vector_store.get()["ids"]
+            logger.info("Vector store loaded. Document chunks: %d", len(count))
+        except Exception:
+            logger.info("Vector store loaded.")
         return _vector_store
 
     # Build from scratch
@@ -88,7 +91,10 @@ def build_vector_store(force_rebuild: bool = False) -> Chroma:
         collection_name=COLLECTION_NAME,
         persist_directory=vector_db_path,
     )
-    _vector_store.persist()
+    # persist() is deprecated in Chroma >=0.4 — data is written automatically
+    # when persist_directory is set; call it only if the method still exists.
+    if hasattr(_vector_store, "persist"):
+        _vector_store.persist()
     logger.info(
         "Vector store built and persisted. Total chunks: %d", len(chunks)
     )

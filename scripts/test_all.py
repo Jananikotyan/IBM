@@ -4,7 +4,9 @@ Sehat Saathi - Full Test Suite
 Run: python scripts/test_all.py
 """
 import sys, os
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# Always resolve paths relative to the project root, not cwd
+_PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, _PROJECT_ROOT)
 
 # Force UTF-8 output on Windows
 if sys.platform == "win32":
@@ -46,7 +48,7 @@ print("\n========================================")
 print(" TEST 2: Knowledge Base & RAG")
 print("========================================")
 try:
-    kb_path = "./data/knowledge_base"
+    kb_path = os.path.join(_PROJECT_ROOT, "data", "knowledge_base")
     files = [f for f in os.listdir(kb_path) if f.endswith((".txt",".pdf",".md")) and f != ".gitkeep"]
     check("Knowledge base has documents", len(files) >= 1, f"Found {len(files)} files")
     print(f"  [{INFO}] {len(files)} document(s): {', '.join(files)}")
@@ -92,7 +94,7 @@ print(" TEST 4: Tools")
 print("========================================")
 try:
     from app.tools.vaccination_schedule import vaccination_schedule_tool
-    result = vaccination_schedule_tool.invoke("6 weeks old baby")
+    result = vaccination_schedule_tool.run("6 weeks old baby")
     check("Vaccination tool works", bool(result) and len(result) > 50)
     check("Vaccination mentions OPV or Pentavalent", "OPV" in result or "Penta" in result or "vaccine" in result.lower())
     print(f"  [{INFO}] Vaccine result preview: {result[:80]}...")
@@ -101,7 +103,7 @@ except Exception as e:
 
 try:
     from app.tools.symptom_triage import symptom_triage_tool
-    result = symptom_triage_tool.invoke("fever for 3 days, headache, body ache")
+    result = symptom_triage_tool.run("fever for 3 days, headache, body ache")
     check("Symptom triage tool works", bool(result) and len(result) > 30)
     print(f"  [{INFO}] Triage result preview: {result[:80]}...")
 except Exception as e:

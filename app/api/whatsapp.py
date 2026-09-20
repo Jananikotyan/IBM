@@ -12,6 +12,7 @@ Setup:
   4. For local dev: use ngrok → ngrok http 8000
 """
 import logging
+import threading
 from fastapi import APIRouter, Form, Request, HTTPException
 from fastapi.responses import PlainTextResponse
 
@@ -23,13 +24,16 @@ router = APIRouter(prefix="/whatsapp", tags=["WhatsApp"])
 
 # Lazy agent reference (shared with routes.py via module-level singleton)
 _agent = None
+_agent_lock = threading.Lock()
 
 
 def _get_agent():
     global _agent
     if _agent is None:
-        from app.agent.mock_agent import MockSehatAgent
-        _agent = MockSehatAgent()
+        with _agent_lock:
+            if _agent is None:
+                from app.agent.mock_agent import MockSehatAgent
+                _agent = MockSehatAgent()
     return _agent
 
 
@@ -81,9 +85,11 @@ async def whatsapp_incoming(
         result = agent.chat(user_message=user_message, session_id=session_id)
         reply = result.get("response", "Sorry, I could not process your message. Please try again.")
 
-        # WhatsApp has a 1600-char limit per message
+        # WhatsApp has a 1600-char limit per message; truncate at a word boundary
         if len(reply) > 1550:
-            reply = reply[:1547] + "..."
+            truncated = reply[:1540]
+            last_space = truncated.rfind(" ")
+            reply = (truncated[:last_space] if last_space > 0 else truncated) + "…\n\n📞 Call 104 for more info."
 
         logger.info("WhatsApp reply to %s: %s...", From, reply[:80])
         return PlainTextResponse(_twiml_response(reply), media_type="application/xml")

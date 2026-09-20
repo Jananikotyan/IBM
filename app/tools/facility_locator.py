@@ -165,32 +165,241 @@ _CITY_ALIASES = {
     "udupi": "mangalore",  # nearby — use mangalore facilities
 }
 
+# Common Indian pincode prefixes → city name in _CITY_FACILITIES
+# Covers the most-asked pincodes so the tool never needs a network call for these
+_PINCODE_TO_CITY = {
+    # Delhi NCR — 110xxx
+    "110001": "delhi", "110002": "delhi", "110003": "delhi", "110004": "delhi",
+    "110005": "delhi", "110006": "delhi", "110007": "delhi", "110008": "delhi",
+    "110009": "delhi", "110010": "delhi", "110011": "delhi", "110012": "delhi",
+    "110013": "delhi", "110014": "delhi", "110015": "delhi", "110016": "delhi",
+    "110017": "delhi", "110018": "delhi", "110019": "delhi", "110020": "delhi",
+    "110021": "delhi", "110022": "delhi", "110023": "delhi", "110024": "delhi",
+    "110025": "delhi", "110026": "delhi", "110027": "delhi", "110028": "delhi",
+    "110029": "delhi", "110030": "delhi", "110031": "delhi", "110032": "delhi",
+    "110033": "delhi", "110034": "delhi", "110035": "delhi", "110036": "delhi",
+    "110037": "delhi", "110038": "delhi", "110039": "delhi", "110040": "delhi",
+    "110041": "delhi", "110042": "delhi", "110043": "delhi", "110044": "delhi",
+    "110045": "delhi", "110046": "delhi", "110047": "delhi", "110048": "delhi",
+    "110049": "delhi", "110050": "delhi", "110051": "delhi", "110052": "delhi",
+    "110053": "delhi", "110054": "delhi", "110055": "delhi", "110056": "delhi",
+    "110057": "delhi", "110058": "delhi", "110059": "delhi", "110060": "delhi",
+    "110061": "delhi", "110062": "delhi", "110063": "delhi", "110064": "delhi",
+    "110065": "delhi", "110066": "delhi", "110067": "delhi", "110068": "delhi",
+    "110069": "delhi", "110070": "delhi", "110071": "delhi", "110072": "delhi",
+    "110073": "delhi", "110074": "delhi", "110075": "delhi", "110076": "delhi",
+    "110077": "delhi", "110078": "delhi", "110079": "delhi", "110080": "delhi",
+    "110081": "delhi", "110082": "delhi", "110083": "delhi", "110084": "delhi",
+    "110085": "delhi", "110086": "delhi", "110087": "delhi", "110088": "delhi",
+    "110089": "delhi", "110090": "delhi", "110091": "delhi", "110092": "delhi",
+    "110093": "delhi", "110094": "delhi", "110095": "delhi", "110096": "delhi",
+    # Mumbai — 400xxx
+    "400001": "mumbai", "400002": "mumbai", "400003": "mumbai", "400004": "mumbai",
+    "400005": "mumbai", "400006": "mumbai", "400007": "mumbai", "400008": "mumbai",
+    "400009": "mumbai", "400010": "mumbai", "400011": "mumbai", "400012": "mumbai",
+    "400013": "mumbai", "400014": "mumbai", "400015": "mumbai", "400016": "mumbai",
+    "400017": "mumbai", "400018": "mumbai", "400019": "mumbai", "400020": "mumbai",
+    "400021": "mumbai", "400022": "mumbai", "400023": "mumbai", "400024": "mumbai",
+    "400025": "mumbai", "400026": "mumbai", "400027": "mumbai", "400028": "mumbai",
+    "400029": "mumbai", "400030": "mumbai",
+    # Bangalore — 560xxx
+    "560001": "bangalore", "560002": "bangalore", "560003": "bangalore",
+    "560004": "bangalore", "560005": "bangalore", "560006": "bangalore",
+    "560007": "bangalore", "560008": "bangalore", "560009": "bangalore",
+    "560010": "bangalore", "560011": "bangalore", "560012": "bangalore",
+    "560013": "bangalore", "560014": "bangalore", "560015": "bangalore",
+    "560016": "bangalore", "560017": "bangalore", "560018": "bangalore",
+    "560019": "bangalore", "560020": "bangalore", "560021": "bangalore",
+    "560022": "bangalore", "560023": "bangalore", "560024": "bangalore",
+    "560025": "bangalore", "560026": "bangalore", "560027": "bangalore",
+    "560028": "bangalore", "560029": "bangalore", "560030": "bangalore",
+    "560034": "bangalore", "560037": "bangalore", "560040": "bangalore",
+    "560041": "bangalore", "560043": "bangalore", "560045": "bangalore",
+    "560048": "bangalore", "560050": "bangalore", "560068": "bangalore",
+    "560076": "bangalore", "560078": "bangalore", "560079": "bangalore",
+    "560085": "bangalore", "560086": "bangalore", "560094": "bangalore",
+    "560095": "bangalore", "560100": "bangalore",
+    # Chennai — 600xxx
+    "600001": "chennai", "600002": "chennai", "600003": "chennai",
+    "600004": "chennai", "600005": "chennai", "600006": "chennai",
+    "600007": "chennai", "600008": "chennai", "600009": "chennai",
+    "600010": "chennai", "600011": "chennai", "600012": "chennai",
+    "600013": "chennai", "600014": "chennai", "600015": "chennai",
+    "600017": "chennai", "600018": "chennai", "600020": "chennai",
+    "600024": "chennai", "600025": "chennai", "600026": "chennai",
+    "600028": "chennai", "600029": "chennai", "600030": "chennai",
+    "600031": "chennai", "600032": "chennai", "600033": "chennai",
+    "600034": "chennai", "600035": "chennai", "600040": "chennai",
+    # Hyderabad — 500xxx
+    "500001": "hyderabad", "500002": "hyderabad", "500003": "hyderabad",
+    "500004": "hyderabad", "500005": "hyderabad", "500006": "hyderabad",
+    "500007": "hyderabad", "500008": "hyderabad", "500009": "hyderabad",
+    "500010": "hyderabad", "500011": "hyderabad", "500012": "hyderabad",
+    "500013": "hyderabad", "500015": "hyderabad", "500016": "hyderabad",
+    "500017": "hyderabad", "500018": "hyderabad", "500019": "hyderabad",
+    "500020": "hyderabad", "500026": "hyderabad", "500027": "hyderabad",
+    "500028": "hyderabad", "500029": "hyderabad", "500030": "hyderabad",
+    "500032": "hyderabad", "500033": "hyderabad", "500034": "hyderabad",
+    "500035": "hyderabad", "500036": "hyderabad", "500038": "hyderabad",
+    # Kolkata — 700xxx
+    "700001": "kolkata", "700002": "kolkata", "700003": "kolkata",
+    "700004": "kolkata", "700005": "kolkata", "700006": "kolkata",
+    "700007": "kolkata", "700008": "kolkata", "700009": "kolkata",
+    "700010": "kolkata", "700011": "kolkata", "700012": "kolkata",
+    "700013": "kolkata", "700014": "kolkata", "700015": "kolkata",
+    "700016": "kolkata", "700017": "kolkata", "700018": "kolkata",
+    "700019": "kolkata", "700020": "kolkata",
+    # Pune — 411xxx
+    "411001": "pune", "411002": "pune", "411003": "pune", "411004": "pune",
+    "411005": "pune", "411006": "pune", "411007": "pune", "411008": "pune",
+    "411009": "pune", "411011": "pune", "411012": "pune", "411013": "pune",
+    "411014": "pune", "411015": "pune", "411016": "pune", "411017": "pune",
+    "411018": "pune", "411019": "pune", "411020": "pune", "411021": "pune",
+    "411028": "pune", "411037": "pune", "411038": "pune", "411041": "pune",
+    # Mangalore — 575xxx
+    "575001": "mangalore", "575002": "mangalore", "575003": "mangalore",
+    "575004": "mangalore", "575005": "mangalore", "575006": "mangalore",
+    "575007": "mangalore", "575008": "mangalore",
+    # Mysore — 570xxx
+    "570001": "mysore", "570002": "mysore", "570003": "mysore",
+    "570004": "mysore", "570008": "mysore", "570010": "mysore",
+    "570011": "mysore", "570015": "mysore", "570019": "mysore",
+    "570024": "mysore", "570025": "mysore",
+    # Jaipur — 302xxx
+    "302001": "jaipur", "302002": "jaipur", "302003": "jaipur",
+    "302004": "jaipur", "302005": "jaipur", "302006": "jaipur",
+    "302012": "jaipur", "302015": "jaipur", "302016": "jaipur",
+    "302017": "jaipur", "302018": "jaipur", "302019": "jaipur",
+    "302020": "jaipur", "302021": "jaipur", "302022": "jaipur",
+    # Lucknow — 226xxx
+    "226001": "lucknow", "226002": "lucknow", "226003": "lucknow",
+    "226004": "lucknow", "226005": "lucknow", "226006": "lucknow",
+    "226007": "lucknow", "226008": "lucknow", "226009": "lucknow",
+    "226010": "lucknow", "226012": "lucknow", "226016": "lucknow",
+    "226017": "lucknow", "226018": "lucknow", "226021": "lucknow",
+    # Patna — 800xxx
+    "800001": "patna", "800002": "patna", "800003": "patna",
+    "800004": "patna", "800005": "patna", "800006": "patna",
+    "800007": "patna", "800008": "patna", "800009": "patna",
+    "800010": "patna", "800011": "patna", "800012": "patna",
+    "800013": "patna", "800014": "patna", "800015": "patna",
+    "800016": "patna", "800020": "patna",
+    # Ahmedabad — 380xxx
+    "380001": "ahmedabad", "380002": "ahmedabad", "380004": "ahmedabad",
+    "380005": "ahmedabad", "380006": "ahmedabad", "380007": "ahmedabad",
+    "380008": "ahmedabad", "380009": "ahmedabad", "380013": "ahmedabad",
+    "380014": "ahmedabad", "380015": "ahmedabad", "380016": "ahmedabad",
+    "380018": "ahmedabad", "380019": "ahmedabad", "380021": "ahmedabad",
+    "380022": "ahmedabad", "380023": "ahmedabad", "380024": "ahmedabad",
+    "380025": "ahmedabad", "380026": "ahmedabad", "380027": "ahmedabad",
+    # Chandigarh — 160xxx
+    "160001": "chandigarh", "160002": "chandigarh", "160003": "chandigarh",
+    "160009": "chandigarh", "160011": "chandigarh", "160012": "chandigarh",
+    "160014": "chandigarh", "160015": "chandigarh", "160017": "chandigarh",
+    "160018": "chandigarh", "160019": "chandigarh", "160020": "chandigarh",
+    "160022": "chandigarh", "160023": "chandigarh", "160025": "chandigarh",
+    "160036": "chandigarh", "160047": "chandigarh", "160059": "chandigarh",
+    # Kochi — 682xxx
+    "682001": "kochi", "682002": "kochi", "682003": "kochi",
+    "682004": "kochi", "682005": "kochi", "682006": "kochi",
+    "682007": "kochi", "682008": "kochi", "682009": "kochi",
+    "682010": "kochi", "682011": "kochi", "682012": "kochi",
+    "682013": "kochi", "682016": "kochi", "682017": "kochi",
+    "682018": "kochi", "682019": "kochi", "682020": "kochi",
+    # Nagpur — 440xxx
+    "440001": "nagpur", "440002": "nagpur", "440003": "nagpur",
+    "440004": "nagpur", "440005": "nagpur", "440006": "nagpur",
+    "440007": "nagpur", "440008": "nagpur", "440009": "nagpur",
+    "440010": "nagpur", "440012": "nagpur", "440013": "nagpur",
+    "440014": "nagpur", "440015": "nagpur", "440016": "nagpur",
+    "440017": "nagpur", "440018": "nagpur", "440022": "nagpur",
+    # Coimbatore — 641xxx
+    "641001": "coimbatore", "641002": "coimbatore", "641003": "coimbatore",
+    "641004": "coimbatore", "641005": "coimbatore", "641006": "coimbatore",
+    "641007": "coimbatore", "641008": "coimbatore", "641009": "coimbatore",
+    "641010": "coimbatore", "641011": "coimbatore", "641012": "coimbatore",
+    "641013": "coimbatore", "641014": "coimbatore", "641015": "coimbatore",
+    "641016": "coimbatore", "641017": "coimbatore", "641018": "coimbatore",
+    "641019": "coimbatore", "641020": "coimbatore",
+    # Visakhapatnam — 530xxx
+    "530001": "visakhapatnam", "530002": "visakhapatnam", "530003": "visakhapatnam",
+    "530004": "visakhapatnam", "530005": "visakhapatnam", "530007": "visakhapatnam",
+    "530009": "visakhapatnam", "530011": "visakhapatnam", "530012": "visakhapatnam",
+    "530013": "visakhapatnam", "530016": "visakhapatnam", "530017": "visakhapatnam",
+    "530022": "visakhapatnam", "530026": "visakhapatnam",
+    # Surat — 395xxx
+    "395001": "surat", "395002": "surat", "395003": "surat",
+    "395004": "surat", "395005": "surat", "395006": "surat",
+    "395007": "surat", "395008": "surat", "395009": "surat",
+    "395010": "surat", "395011": "surat", "395012": "surat",
+    # Bhopal — 462xxx
+    "462001": "bhopal", "462002": "bhopal", "462003": "bhopal",
+    "462010": "bhopal", "462011": "bhopal", "462016": "bhopal",
+    "462020": "bhopal", "462022": "bhopal", "462023": "bhopal",
+    "462026": "bhopal", "462027": "bhopal", "462030": "bhopal",
+    "462031": "bhopal", "462036": "bhopal", "462038": "bhopal",
+    # Indore — 452xxx (use bhopal as nearest DB entry)
+    "452001": "bhopal", "452002": "bhopal", "452003": "bhopal",
+    "452004": "bhopal", "452005": "bhopal", "452006": "bhopal",
+    "452007": "bhopal", "452008": "bhopal", "452009": "bhopal",
+    "452010": "bhopal",
+}
+
 # Keywords that indicate a location-less request — we should ask for location
+# Matches ONLY bare requests with no location — e.g. "nearest hospital" or "hospital?"
+# Does NOT match inputs that include a city, pincode, or preposition indicating a location.
 _NO_LOCATION_PATTERNS = re.compile(
-    r"^(nearest|nearby|near me|close to me|hospital|clinic|phc|doctor|"
-    r"health cent(re|er)|dawakhana|aspatal|aspatre|chikitsaalaya)\s*[\?!.]?$",
+    r"^(?:nearest|nearby|near me|close to me|find|show|get|locate|"
+    r"(?:nearest\s+)?(?:hospital|clinic|phc|doctor|health\s+cent(?:re|er)|"
+    r"dawakhana|aspatal|aspatre|chikitsaalaya))\s*[\?!.]?$",
     re.IGNORECASE,
 )
+
+
+def _add_osm_url(facilities: list) -> list:
+    """
+    For hardcoded city DB entries that have gmaps_url but no maps_url,
+    derive the OpenStreetMap URL from the lat/lon in gmaps_url.
+    """
+    import re as _re
+    result = []
+    for f in facilities:
+        entry = dict(f)
+        if not entry.get("maps_url") and entry.get("gmaps_url"):
+            m = _re.search(r"q=([\d.]+),([\d.]+)", entry["gmaps_url"])
+            if m:
+                lat, lon = m.group(1), m.group(2)
+                entry["maps_url"] = (
+                    f"https://www.openstreetmap.org/?mlat={lat}&mlon={lon}"
+                    f"&zoom=17#map=17/{lat}/{lon}"
+                )
+        result.append(entry)
+    return result
 
 
 def _lookup_city_db(location: str) -> list:
     """
     Instantly look up facilities from the hardcoded city database.
-    Tries exact match, then alias, then partial match.
+    Tries pincode map, exact match, alias, then partial match.
     Returns list of facility dicts or empty list if city not found.
     """
     key = location.lower().strip()
+    # Pincode lookup — e.g. "110001" → "delhi"
+    if re.match(r"^\d{6}$", key):
+        city = _PINCODE_TO_CITY.get(key)
+        if city and city in _CITY_FACILITIES:
+            return _add_osm_url(_CITY_FACILITIES[city])
     # Direct match
     if key in _CITY_FACILITIES:
-        return _CITY_FACILITIES[key]
+        return _add_osm_url(_CITY_FACILITIES[key])
     # Alias match
     resolved = _CITY_ALIASES.get(key)
     if resolved and resolved in _CITY_FACILITIES:
-        return _CITY_FACILITIES[resolved]
+        return _add_osm_url(_CITY_FACILITIES[resolved])
     # Partial match — e.g. "mangalore district" → "mangalore"
     for city in _CITY_FACILITIES:
         if city in key or key in city:
-            return _CITY_FACILITIES[city]
+            return _add_osm_url(_CITY_FACILITIES[city])
     return []
 
 
@@ -241,9 +450,9 @@ def _search_osm(lat: float, lon: float, radius_m: int = 5000) -> list[dict]:
     out body 12;
     """
     elements = []
-    for url in OVERPASS_URLS:
+    for url in OVERPASS_URLS[:2]:   # try at most 2 mirrors to bound total wait time
         try:
-            with httpx.Client(timeout=15.0) as client:
+            with httpx.Client(timeout=8.0) as client:
                 resp = client.post(url, data={"data": query}, headers=HEADERS)
                 resp.raise_for_status()
                 elements = resp.json().get("elements", [])
@@ -267,8 +476,13 @@ def _search_osm(lat: float, lon: float, radius_m: int = 5000) -> list[dict]:
             tags.get("addr:city", ""),
         ]
         address = ", ".join(p for p in addr_parts if p) or ""
-        f_lat = el.get("lat", lat)
-        f_lon = el.get("lon", lon)
+        raw_lat = el.get("lat")
+        raw_lon = el.get("lon")
+        try:
+            f_lat = float(raw_lat) if raw_lat is not None else lat
+            f_lon = float(raw_lon) if raw_lon is not None else lon
+        except (TypeError, ValueError):
+            f_lat, f_lon = lat, lon
         facilities.append({
             "name": name,
             "type": ftype,
@@ -276,7 +490,7 @@ def _search_osm(lat: float, lon: float, radius_m: int = 5000) -> list[dict]:
             "address": address,
             "lat": f_lat,
             "lon": f_lon,
-            "maps_url": f"https://www.openstreetmap.org/?mlat={f_lat}&mlon={f_lon}&zoom=17",
+            "maps_url": f"https://www.openstreetmap.org/?mlat={f_lat}&mlon={f_lon}&zoom=17#map=17/{f_lat}/{f_lon}",
             "gmaps_url": f"https://www.google.com/maps?q={f_lat},{f_lon}",
         })
     return facilities
@@ -384,7 +598,24 @@ def facility_locator_tool(location: str) -> str:
     Args:
         location: Indian pincode (6 digits) or city/district name (e.g. '110001', 'Chennai', 'Mysore')
     """
-    logger.info("Facility locator: %s", location)
+    logger.info("Facility locator raw input: %s", location)
+
+    # Pre-process: if the LLM passed the full user sentence, extract pincode or city from it
+    pincode_in_text = re.search(r"\b(\d{6})\b", location)
+    if pincode_in_text:
+        location = pincode_in_text.group(1)
+        logger.info("Extracted pincode from sentence: %s", location)
+    else:
+        # Try to extract a city name from common phrase patterns
+        city_match = re.search(
+            r"(?:near(?:est)?|in|at|around|hospital in|clinic in|phc in)\s+([A-Za-z][\w\s]{1,25}?)(?:\s*[?!.,]|$)",
+            location, re.IGNORECASE
+        )
+        if city_match:
+            location = city_match.group(1).strip()
+            logger.info("Extracted city from sentence: %s", location)
+
+    logger.info("Facility locator resolved: %s", location)
 
     # Step 0: Check if user forgot to give a location
     if _NO_LOCATION_PATTERNS.match(location.strip()):

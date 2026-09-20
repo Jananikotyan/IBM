@@ -12,6 +12,7 @@ Endpoints:
 """
 import logging
 import base64
+import threading
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -26,6 +27,7 @@ from app.api.schemas import (
 from app.agent.memory import clear_memory, list_sessions
 from app.config import settings
 from app.api.whatsapp import router as whatsapp_router
+from app.api.meta_whatsapp import router as meta_whatsapp_router
 
 logger = logging.getLogger(__name__)
 
@@ -52,22 +54,26 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include WhatsApp router
-app.include_router(whatsapp_router)
+# Include WhatsApp routers
+app.include_router(whatsapp_router)           # Legacy Twilio (optional)
+app.include_router(meta_whatsapp_router)      # Meta Cloud API (free)
 
 # Lazy-load agent to avoid startup delay
 _agent = None
+_agent_lock = threading.Lock()
 
 
 def _get_agent():
     global _agent
     if _agent is None:
-        # Always use MockSehatAgent as the base — it handles all tools
-        # OLLAMA_MODE enhances the LLM responses inside mock agent
-        logger.info("Starting Sehat Saathi agent (mock_mode=%s, ollama_mode=%s)",
-                    settings.mock_mode, settings.ollama_mode)
-        from app.agent.mock_agent import MockSehatAgent
-        _agent = MockSehatAgent()
+        with _agent_lock:
+            if _agent is None:
+                # Always use MockSehatAgent as the base — it handles all tools
+                # OLLAMA_MODE enhances the LLM responses inside mock agent
+                logger.info("Starting Sehat Saathi agent (mock_mode=%s, ollama_mode=%s)",
+                            settings.mock_mode, settings.ollama_mode)
+                from app.agent.mock_agent import MockSehatAgent
+                _agent = MockSehatAgent()
     return _agent
 
 
@@ -152,13 +158,18 @@ async def voice_chat(request: VoiceInputRequest):
     Convert voice input to text, then process as a chat message.
     Requires Watson Speech-to-Text to be configured.
     """
-    if not settings.watson_stt_api_key or settings.watson_stt_api_key == "your_stt_api_key_here":
+    if not settings.watson_stt_api_key:
         raise HTTPException(
             status_code=501,
             detail="Voice input is not configured. Please set WATSON_STT_API_KEY.",
         )
 
     try:
+        try:
+            audio_data = base64.b64decode(request.audio_base64)
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid base64-encoded audio data.")
+
         from ibm_watson import SpeechToTextV1
         from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
@@ -166,7 +177,6 @@ async def voice_chat(request: VoiceInputRequest):
         stt = SpeechToTextV1(authenticator=authenticator)
         stt.set_service_url(settings.watson_stt_url)
 
-        audio_data = base64.b64decode(request.audio_base64)
         response = stt.recognize(
             audio=audio_data,
             content_type=request.content_type,
@@ -177,7 +187,12 @@ async def voice_chat(request: VoiceInputRequest):
         if not transcripts:
             raise HTTPException(status_code=400, detail="Could not transcribe audio.")
 
-        text = transcripts[0]["alternatives"][0]["transcript"].strip()
+        alternatives = transcripts[0].get("alternatives", [])
+        if not alternatives:
+            raise HTTPException(status_code=400, detail="Could not transcribe audio.")
+        text = alternatives[0].get("transcript", "").strip()
+        if not text:
+            raise HTTPException(status_code=400, detail="Could not transcribe audio.")
         logger.info("Transcribed voice input: %s", text)
 
         # Process as normal chat

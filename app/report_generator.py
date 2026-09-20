@@ -17,6 +17,7 @@ from __future__ import annotations
 import re
 import io
 import logging
+import os
 from datetime import datetime
 from typing import List, Dict
 
@@ -151,7 +152,15 @@ def generate_pdf(
     pdf.cell(W, 8, _safe("Sehat Saathi - Health Conversation Report"), ln=False)
     pdf.set_font("Helvetica", "", 9)
     pdf.set_xy(18, 18)
-    pdf.cell(W, 6, "Powered by IBM watsonx.ai (Granite) + LangChain", ln=True)
+    _ollama = os.getenv("OLLAMA_MODE", "false").lower() == "true"
+    _mock = os.getenv("MOCK_MODE", "false").lower() == "true"
+    if _mock:
+        _engine_label = "Mock/Demo Mode"
+    elif _ollama:
+        _engine_label = "Ollama (Granite) + LangChain"
+    else:
+        _engine_label = "IBM watsonx.ai (Granite) + LangChain"
+    pdf.cell(W, 6, f"Powered by {_engine_label}", ln=True)
 
     pdf.ln(10)
 

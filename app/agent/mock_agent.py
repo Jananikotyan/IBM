@@ -11,6 +11,8 @@ Runs the FULL Sehat Saathi pipeline WITHOUT any API keys:
 
 Set MOCK_MODE=true in your .env to activate this mode.
 """
+from __future__ import annotations
+
 import logging
 import re
 from app.agent.safety_layer import check_red_flags
@@ -27,7 +29,29 @@ from app.multilingual.local_translator import (
     localise_fallback,
     localise_topic,
     get_strings,
+    LANGUAGE_NAMES,
 )
+
+# Languages that have full local string tables (no Groq needed for translation)
+_LOCALLY_HANDLED = {"en", "hi", "kn", "ta", "te", "bn"}
+
+
+def _translate_to_lang(text: str, lang: str) -> str:
+    """
+    Translate an English response to the target language via Groq.
+    Only called for languages NOT in _LOCALLY_HANDLED (mr, gu, pa, ml, ur, …).
+    Falls back gracefully to English if Groq is unavailable.
+    """
+    if lang in _LOCALLY_HANDLED or lang == "en":
+        return text
+    try:
+        from app.multilingual.groq_translator import translate_from_english
+        translated = translate_from_english(text, lang)
+        if translated and translated.strip():
+            return translated
+    except Exception as e:
+        logger.warning("Groq back-translation to %s failed: %s", lang, e)
+    return text  # graceful English fallback
 
 logger = logging.getLogger(__name__)
 
@@ -248,12 +272,21 @@ def _mock_llm_response(user_input: str, lang: str = "en") -> str:
     """
     Smart rule-based response engine — replaces Granite LLM in mock mode.
     Routes to tools or returns general health info.
-    Responds in the detected language (en / hi / kn).
+    Responds in the detected language (en / hi / kn / mr / gu / pa / ml).
     """
     disclaimer = _get_disclaimer(lang)
 
-    # Normalise input to English for routing (handles Hindi/Kannada keywords)
-    english_input = normalise_to_english(user_input, lang)
+    # Normalise input to English for routing
+    # For locally handled languages: fast keyword substitution (no API)
+    # For others (mr, gu, pa, ml): use Groq to get proper English text
+    if lang not in _LOCALLY_HANDLED:
+        try:
+            from app.multilingual.groq_translator import translate_to_english
+            english_input, _ = translate_to_english(user_input)
+        except Exception:
+            english_input = normalise_to_english(user_input, lang)
+    else:
+        english_input = normalise_to_english(user_input, lang)
     text_lower = english_input.lower()
 
     # Check for "about Sehat Saathi" questions first — highest priority
@@ -263,35 +296,38 @@ def _mock_llm_response(user_input: str, lang: str = "en") -> str:
     # Check general knowledge topics
     for topic, keywords in TOPIC_KEYWORDS.items():
         if any(kw in text_lower or kw in user_input.lower() for kw in keywords):
-            # Try localised response first, fall back to English
+            # Try localised response first, fall back to English + Groq translate
             localised = localise_topic(topic, lang)
             if localised:
                 return localised + disclaimer
-            return GENERAL_RESPONSES[topic] + disclaimer
+            en_resp = GENERAL_RESPONSES[topic] + disclaimer
+            return _translate_to_lang(en_resp, lang)
 
     # Route to appropriate tool
     tool = _route_to_tool(text_lower)
 
     if tool == "triage":
         en_response = symptom_triage_tool.run(english_input)
-        return _localise_triage(en_response, lang) + disclaimer
+        if lang in _LOCALLY_HANDLED:
+            return _localise_triage(en_response, lang) + disclaimer
+        # For mr/gu/pa/ml: strip inline disclaimer, translate whole response, add disclaimer once
+        clean = _strip_inline_disclaimer(en_response)
+        return _translate_to_lang(clean, lang) + disclaimer
 
     if tool == "vaccination":
         en_response = vaccination_schedule_tool.run(english_input)
-        return _localise_vaccination(en_response, lang)
+        if lang in _LOCALLY_HANDLED:
+            return _localise_vaccination(en_response, lang) + disclaimer
+        clean = _strip_inline_disclaimer(en_response)
+        return _translate_to_lang(clean, lang) + disclaimer
 
     if tool == "facility":
         pincode_match = re.search(r"\b\d{6}\b", user_input)
-        # Broader location extraction: captures city/place after common prepositions
-        # Handles: "near mangalore", "in mangalore", "at mangalore",
-        #          "hospital near mangalore", "nearest hospital in mangalore",
-        #          "find hospital near mangalore"
         location_match = re.search(
             r"(?:near(?:est)?|in|at|around)\s+([A-Za-z][\w\s]{1,28}?)(?:\s*\?|$|\.|,)",
             english_input, re.IGNORECASE
         )
         if not location_match:
-            # Second pass: grab last capitalised word/phrase (likely a city name)
             location_match = re.search(
                 r"(?:hospital|clinic|phc|doctor|health\s+cent(?:re|er))\s+.*?([A-Z][a-z]{2,}(?:\s+[A-Z][a-z]{2,})?)\s*(?:\?|$|\.|,)?$",
                 user_input, re.MULTILINE
@@ -299,7 +335,7 @@ def _mock_llm_response(user_input: str, lang: str = "en") -> str:
         location = (
             pincode_match.group(0) if pincode_match
             else location_match.group(1).strip() if location_match
-            else english_input  # pass full query — facility_locator_tool will try to geocode it
+            else english_input
         )
         try:
             en_response = facility_locator_tool.run(location)
@@ -312,17 +348,21 @@ def _mock_llm_response(user_input: str, lang: str = "en") -> str:
                 "- Visit https://hfr.abdm.gov.in to find nearby facilities\n\n"
                 "_I'm an AI assistant, not a doctor. Please consult a healthcare professional._"
             )
-        return _localise_facility(en_response, lang)
+        if lang in _LOCALLY_HANDLED:
+            return _localise_facility(en_response, lang)
+        clean = _strip_inline_disclaimer(en_response)
+        return _translate_to_lang(clean, lang) + disclaimer
 
-    # Try Ollama for general questions if available
-    if settings.ollama_mode:
+    # Try Ollama for general questions if available and not in pure mock mode
+    if settings.ollama_mode and not settings.mock_mode:
         ollama_response = _ask_ollama(user_input, lang)
         if ollama_response:
-            return ollama_response + disclaimer
+            return _translate_to_lang(ollama_response + disclaimer, lang)
 
     # Fallback
     fb = localise_fallback(lang)
-    return (fb if fb else FALLBACK_RESPONSE) + disclaimer
+    fallback_text = (fb if fb else FALLBACK_RESPONSE) + disclaimer
+    return _translate_to_lang(fallback_text, lang)
 
 
 # Pre-built answers for very common general questions — instant, no Ollama needed
@@ -437,6 +477,26 @@ def _ask_ollama(user_input: str, lang: str) -> str:
     return ""
 
 
+# Inline disclaimer text as it appears in tool outputs
+_INLINE_DISCLAIMER = (
+    "_I'm an AI assistant, not a doctor. For diagnosis or treatment, "
+    "please consult a healthcare professional._"
+)
+_INLINE_DISCLAIMER2 = (
+    "_I'm an AI assistant, not a doctor. Please consult a healthcare professional._"
+)
+
+
+def _strip_inline_disclaimer(text: str) -> str:
+    """Remove the inline disclaimer from tool output so it isn't translated twice."""
+    return (
+        text
+        .replace(_INLINE_DISCLAIMER, "")
+        .replace(_INLINE_DISCLAIMER2, "")
+        .rstrip()
+    )
+
+
 def _localise_triage(en_response: str, lang: str) -> str:
     """Replace English triage tier labels with localised versions."""
     if lang == "en":
@@ -543,8 +603,17 @@ class MockSehatAgent:
             logger.critical("MOCK MODE — Emergency triggered: %s", category)
             return result
 
-        # Step 3: Determine routing category for analytics
-        english_input = normalise_to_english(user_message, lang)
+        # Step 3: Translate to English for routing
+        # For locally handled languages use keyword normalisation (fast, no API)
+        # For others (mr, gu, pa, ml) use Groq to get proper English translation
+        if lang not in _LOCALLY_HANDLED:
+            try:
+                from app.multilingual.groq_translator import translate_to_english
+                english_input, _ = translate_to_english(user_message)
+            except Exception:
+                english_input = normalise_to_english(user_message, lang)
+        else:
+            english_input = normalise_to_english(user_message, lang)
         tool = _route_to_tool(english_input.lower())
         # Map tool name → analytics category
         _tool_to_cat = {
@@ -578,14 +647,15 @@ class MockSehatAgent:
             elif lang == "kn":
                 response = "ಕ್ಷಮಿಸಿ, ತೊಂದರೆ ಆಯಿತು. ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ ಅಥವಾ **104** ಗೆ ಕರೆ ಮಾಡಿ।" + disc
             else:
-                response = "I'm sorry, I had trouble processing that. Please try again or call **104**." + disc
+                en_err = "I'm sorry, I had trouble processing that. Please try again or call **104**." + disc
+                response = _translate_to_lang(en_err, lang)
 
         # Step 5: Save to memory
         try:
             memory = get_memory(session_id)
             memory.save_context({"input": user_message}, {"output": response})
-        except Exception:
-            pass
+        except Exception as mem_err:
+            logger.warning("Failed to save conversation memory for session %s: %s", session_id, mem_err)
 
         result["response"] = response
         return result

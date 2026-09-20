@@ -6,12 +6,16 @@ Provides hardcoded phrase-level translations for all Sehat Saathi responses
 so the app works fully offline for hi, kn, ta, te, bn without any API key.
 
 Supported in mock/demo mode:
-  - en  English   (passthrough)
-  - hi  Hindi     (Devanagari script + keywords)
-  - kn  Kannada   (Kannada script + keywords)
-  - ta  Tamil     (Tamil script + keywords)
-  - te  Telugu    (Telugu script + keywords)
-  - bn  Bengali   (Bengali script + keywords)
+  - en  English    (passthrough)
+  - hi  Hindi      (Devanagari script + keywords)
+  - mr  Marathi    (Devanagari script + Marathi keywords)
+  - kn  Kannada    (Kannada script + keywords)
+  - ta  Tamil      (Tamil script + keywords)
+  - te  Telugu     (Telugu script + keywords)
+  - bn  Bengali    (Bengali script + keywords)
+  - gu  Gujarati   (Gujarati script + keywords)
+  - pa  Punjabi    (Gurmukhi script + keywords)
+  - ml  Malayalam  (Malayalam script + keywords)
 """
 import re
 import logging
@@ -21,11 +25,41 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Unicode script ranges for script-based language detection
 # ---------------------------------------------------------------------------
-_DEVANAGARI    = re.compile(r"[\u0900-\u097F]")   # Hindi, Marathi
-_KANNADA_SCRIPT= re.compile(r"[\u0C80-\u0CFF]")   # Kannada
-_TAMIL_SCRIPT  = re.compile(r"[\u0B80-\u0BFF]")   # Tamil
-_TELUGU_SCRIPT = re.compile(r"[\u0C00-\u0C7F]")   # Telugu
-_BENGALI_SCRIPT= re.compile(r"[\u0980-\u09FF]")   # Bengali
+_DEVANAGARI      = re.compile(r"[\u0900-\u097F]")   # Hindi + Marathi (both Devanagari)
+_KANNADA_SCRIPT  = re.compile(r"[\u0C80-\u0CFF]")   # Kannada
+_TAMIL_SCRIPT    = re.compile(r"[\u0B80-\u0BFF]")   # Tamil
+_TELUGU_SCRIPT   = re.compile(r"[\u0C00-\u0C7F]")   # Telugu
+_BENGALI_SCRIPT  = re.compile(r"[\u0980-\u09FF]")   # Bengali
+_GUJARATI_SCRIPT = re.compile(r"[\u0A80-\u0AFF]")   # Gujarati
+_GURMUKHI_SCRIPT = re.compile(r"[\u0A00-\u0A7F]")   # Punjabi (Gurmukhi)
+_MALAYALAM_SCRIPT= re.compile(r"[\u0D00-\u0D7F]")   # Malayalam
+
+# ---------------------------------------------------------------------------
+# Marathi vs Hindi distinguisher (both use Devanagari script)
+# Uses Marathi-specific Devanagari words + Latin transliterations
+# ---------------------------------------------------------------------------
+# Marathi-specific Devanagari words (आहे, नाही, मला, कसे, कुठे etc.)
+_MARATHI_DEVANAGARI = re.compile(
+    r"(?:"
+    r"\u0906\u0939\u0947"        # आहे  (ahe — is/am/are, very common in Marathi)
+    r"|\u0928\u093e\u0939\u0940" # नाही (nahi — no/not, Marathi form)
+    r"|\u092e\u0932\u093e"       # मला  (mala — to me)
+    r"|\u0924\u0941\u0932\u093e" # तुला (tula — to you)
+    r"|\u0906\u092e\u094d\u0939\u0940" # आम्ही (amhi — we)
+    r"|\u0924\u0941\u092e\u094d\u0939\u0940" # तुम्ही (tumhi — you pl.)
+    r"|\u0915\u0941\u0920\u0947" # कुठे (kuthe — where)
+    r"|\u0915\u0938\u0947"       # कसे  (kase — how)
+    r"|\u0906\u091c\u093e\u0930" # आजार (aajar — illness)
+    r"|\u0914\u0937\u0927"       # औषध  (aushadh — medicine)
+    r"|\u0926\u0935\u093e\u0916\u093e\u0928\u093e" # दवाखाना (davakhana — clinic)
+    r")"
+)
+_MARATHI_LATIN = re.compile(
+    r"\b(ahe|aahe|mala|tula|amhi|tumhi|aajar|dukh|dokedukhne|"
+    r"taap|khokla|ulti|julum|aushadh|davakhana|naka|nahi\s*re|"
+    r"kay|kasa|kashi|jevha|tevha|ithe|tithe|mazha|tuzha|aplya)\b",
+    re.IGNORECASE,
+)
 
 # Transliteration keyword patterns
 _HINDI_LATIN = re.compile(
@@ -47,13 +81,30 @@ _TAMIL_LATIN = re.compile(
     re.IGNORECASE,
 )
 _TELUGU_LATIN = re.compile(
-    r"\b(jwaram|noppi|tala\s*noppi|దగ్గు|vaccae|vanta|bathukari|"
-    r"pilladu|garbham|doctor|asupathri|naku|nenu|meeru|ikkade|emi)\b",
+    r"\b(jwaram|noppi|tala\s*noppi|vaccae|vanta|bathukari|"
+    r"pilladu|garbham|asupathri|naku|nenu|meeru|ikkade|emi)\b",
     re.IGNORECASE,
 )
 _BENGALI_LATIN = re.compile(
     r"\b(jhor|jwor|mathavytha|matha\s*bytha|pet\s*bytha|kashi|bomi|"
-    r"diariya|shishu|gorbhoboти|daktar|hospital|amar|ami|apni|kothay|ki)\b",
+    r"diariya|shishu|gorbhoboti|daktar|amar|ami|apni|kothay|ki)\b",
+    re.IGNORECASE,
+)
+_GUJARATI_LATIN = re.compile(
+    r"\b(tav|matha\s*dukh|pete\s*dard|ubkai|dast|bachchu|garbhvati|"
+    r"davakhanu|mane|tane|ame|tame|kai|kyan|kyare|avu|javu|chhe|nathi)\b",
+    re.IGNORECASE,
+)
+_PUNJABI_LATIN = re.compile(
+    r"\b(bukhar|sir\s*dard|pet\s*dard|khansi|ulti|dast|bacha|garbhvati|"
+    r"hospital|asptaal|menu|tenu|assi|tussi|ki|kithey|kadey|hai|nahi|"
+    r"karo|karna|hona|jaana|aana)\b",
+    re.IGNORECASE,
+)
+_MALAYALAM_LATIN = re.compile(
+    r"\b(pani|talavedana|vayaruvali|chumma|okkuka|diare|kutti|"
+    r"garbhini|aasupatri|doctor|eniku|njan|ningal|evide|enthu|"
+    r"undo|alle|aanu|illa|venda|vendum)\b",
     re.IGNORECASE,
 )
 
@@ -61,26 +112,48 @@ _BENGALI_LATIN = re.compile(
 def detect_language(text: str) -> str:
     """
     Detect language from text using Unicode script ranges + transliteration hints.
-    Returns ISO 639-1 code: 'hi', 'kn', 'ta', 'te', 'bn', or 'en'.
+    Returns ISO 639-1 code: 'hi','mr','kn','ta','te','bn','gu','pa','ml', or 'en'.
     """
-    if _DEVANAGARI.search(text):
-        logger.debug("Detected: Hindi (Devanagari)")
-        return "hi"
+    # ── Script-based detection (most reliable) ──────────────────────────────
+    if _GUJARATI_SCRIPT.search(text):
+        logger.debug("Detected: Gujarati (script)")
+        return "gu"
+    if _GURMUKHI_SCRIPT.search(text):
+        logger.debug("Detected: Punjabi (Gurmukhi script)")
+        return "pa"
+    if _MALAYALAM_SCRIPT.search(text):
+        logger.debug("Detected: Malayalam (script)")
+        return "ml"
     if _TAMIL_SCRIPT.search(text):
-        logger.debug("Detected: Tamil")
+        logger.debug("Detected: Tamil (script)")
         return "ta"
     if _BENGALI_SCRIPT.search(text):
-        logger.debug("Detected: Bengali")
+        logger.debug("Detected: Bengali (script)")
         return "bn"
     if _TELUGU_SCRIPT.search(text):
-        logger.debug("Detected: Telugu")
+        logger.debug("Detected: Telugu (script)")
         return "te"
     if _KANNADA_SCRIPT.search(text):
-        logger.debug("Detected: Kannada")
+        logger.debug("Detected: Kannada (script)")
         return "kn"
-    if _HINDI_LATIN.search(text):
-        logger.debug("Detected: Hindi (transliteration)")
+    if _DEVANAGARI.search(text):
+        # Both Hindi and Marathi use Devanagari — check Marathi-specific words first
+        if _MARATHI_DEVANAGARI.search(text) or _MARATHI_LATIN.search(text):
+            logger.debug("Detected: Marathi (Devanagari + Marathi markers)")
+            return "mr"
+        logger.debug("Detected: Hindi (Devanagari)")
         return "hi"
+
+    # ── Transliteration-based detection (Latin script) ──────────────────────
+    if _MARATHI_LATIN.search(text):
+        logger.debug("Detected: Marathi (transliteration)")
+        return "mr"
+    if _GUJARATI_LATIN.search(text):
+        logger.debug("Detected: Gujarati (transliteration)")
+        return "gu"
+    if _MALAYALAM_LATIN.search(text):
+        logger.debug("Detected: Malayalam (transliteration)")
+        return "ml"
     if _KANNADA_LATIN.search(text):
         logger.debug("Detected: Kannada (transliteration)")
         return "kn"
@@ -93,6 +166,12 @@ def detect_language(text: str) -> str:
     if _BENGALI_LATIN.search(text):
         logger.debug("Detected: Bengali (transliteration)")
         return "bn"
+    if _PUNJABI_LATIN.search(text):
+        logger.debug("Detected: Punjabi (transliteration)")
+        return "pa"
+    if _HINDI_LATIN.search(text):
+        logger.debug("Detected: Hindi (transliteration)")
+        return "hi"
     return "en"
 
 

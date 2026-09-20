@@ -3,7 +3,7 @@ Sehat Saathi - API Request/Response Schemas
 """
 from pydantic import BaseModel, Field
 from typing import Optional
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 
@@ -42,7 +42,7 @@ class ChatResponse(BaseModel):
         default=False,
         description="True if a life-threatening red flag was detected",
     )
-    timestamp: datetime = Field(default_factory=datetime.utcnow)
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
     class Config:
         json_schema_extra = {

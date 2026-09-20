@@ -4,8 +4,9 @@ Sehat Saathi - Conversation Memory Management
 Wraps LangChain ConversationBufferMemory with session support.
 Each user session gets its own isolated memory object.
 """
+from __future__ import annotations
 import logging
-from typing import Dict
+from typing import Dict, List
 from langchain_classic.memory import ConversationBufferMemory
 
 logger = logging.getLogger(__name__)
@@ -44,6 +45,6 @@ def clear_memory(session_id: str) -> None:
         logger.info("Cleared memory for session: %s", session_id)
 
 
-def list_sessions() -> list[str]:
+def list_sessions() -> List[str]:
     """Return all active session IDs."""
     return list(_session_store.keys())

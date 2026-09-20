@@ -29,12 +29,16 @@ try:
 except ImportError:
     FOLIUM_AVAILABLE = False
 
-# ── load heatmap data ────────────────────────────────────────────────────────
+# ── load heatmap data — call the running backend API ────────────────────────
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+
 @st.cache_data(ttl=60)
 def load_heatmap_data():
     try:
-        from app.analytics import get_disease_heatmap_data
-        return get_disease_heatmap_data()
+        import requests
+        r = requests.get(f"{API_BASE_URL}/analytics/heatmap", timeout=5)
+        r.raise_for_status()
+        return r.json().get("points", [])
     except Exception:
         return []
 
@@ -93,16 +97,14 @@ with st.sidebar:
         default=list(CAT_LABELS.keys()),
         format_func=lambda x: CAT_LABELS.get(x, x),
     )
+    # Always default to showing demo data so the map is never blank
     show_demo = st.checkbox("Show demo data (when no real data)", value=True)
     st.divider()
     st.markdown("**Legend**")
+    legend_emojis = {"red":"🔴","orange":"🟠","green":"🟢","blue":"🔵","purple":"🟣"}
     for cat, color in CAT_COLORS.items():
         label = CAT_LABELS.get(cat, cat)
-        st.markdown(f"🔴" if color == "red" else
-                    f"🟠" if color == "orange" else
-                    f"🟢" if color == "green" else
-                    f"🔵" if color == "blue" else
-                    f"🟣" + f" {label}")
+        st.markdown(f"{legend_emojis.get(color,'⚫')} {label}")
 
 # ── load real data ────────────────────────────────────────────────────────────
 real_data = load_heatmap_data()
@@ -158,38 +160,52 @@ if not FOLIUM_AVAILABLE:
     else:
         st.info("No location data to display.")
 else:
-    # Build Folium map centred on India
+    # OpenStreetMap tiles — completely free, no API key, no account needed
     m = folium.Map(
         location=[20.5937, 78.9629],
         zoom_start=5,
-        tiles="CartoDB positron",
+        tiles="OpenStreetMap",
     )
+
+    # Colour hex map for CircleMarkers (more reliable than Icon glyphs)
+    COLOR_HEX = {
+        "orange": "#e67e22",
+        "green":  "#27ae60",
+        "blue":   "#2980b9",
+        "red":    "#e74c3c",
+        "purple": "#8e44ad",
+        "gray":   "#7f8c8d",
+    }
 
     # Add markers
     for point in points:
-        cat = point.get("category", "general")
-        color = CAT_COLORS.get(cat, "gray")
-        icon_name = CAT_ICONS.get(cat, "info-sign")
-        label = CAT_LABELS.get(cat, cat)
+        cat      = point.get("category", "general")
+        color    = CAT_COLORS.get(cat, "gray")
+        hex_col  = COLOR_HEX.get(color, "#7f8c8d")
+        label    = CAT_LABELS.get(cat, cat)
         loc_name = point.get("location", "Unknown")
         date_str = point.get("date", "")
 
         popup_html = f"""
-        <div style="font-family:sans-serif;min-width:160px;">
-          <b>{loc_name}</b><br>
-          <span style="color:{color}">{label}</span><br>
-          <small>{date_str}</small>
+        <div style="font-family:sans-serif;min-width:160px;padding:4px;">
+          <b style="font-size:1rem;">{loc_name}</b><br>
+          <span style="color:{hex_col};font-weight:600;">{label}</span><br>
+          <small style="color:#666;">{date_str}</small>
         </div>
         """
-        folium.Marker(
+        folium.CircleMarker(
             location=[point["lat"], point["lon"]],
-            popup=folium.Popup(popup_html, max_width=200),
+            radius=10,
+            color=hex_col,
+            fill=True,
+            fill_color=hex_col,
+            fill_opacity=0.75,
+            popup=folium.Popup(popup_html, max_width=220),
             tooltip=f"{loc_name} — {label}",
-            icon=folium.Icon(color=color, icon=icon_name, prefix="glyphicon"),
         ).add_to(m)
 
-    # Render
-    map_result = st_folium(m, width="100%", height=520, returned_objects=[])
+    # Render — use_container_width keeps it responsive
+    st_folium(m, use_container_width=True, height=520, returned_objects=[])
 
 # ── data note ─────────────────────────────────────────────────────────────────
 st.divider()

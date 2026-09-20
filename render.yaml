@@ -1,17 +1,16 @@
 services:
-  # ── Backend (FastAPI) ─────────────────────────────────────────────────────
+  # ── Backend (FastAPI) — runs on Render free tier ──────────────────────────
   - type: web
     name: sehat-saathi-backend
     runtime: python
-    rootDir: sehat-saathi
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.api.routes:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
       - key: MOCK_MODE
-        value: true
+        value: "false"
       - key: OLLAMA_MODE
-        value: false
+        value: "false"
       - key: APP_ENV
         value: production
       - key: VECTOR_DB_PATH
@@ -19,17 +18,16 @@ services:
       - key: DOCS_PATH
         value: ./data/knowledge_base
       - key: GROQ_API_KEY
-        sync: false   # You fill this in Render dashboard
-
-  # ── Frontend (Streamlit) ──────────────────────────────────────────────────
-  - type: web
-    name: sehat-saathi-frontend
-    runtime: python
-    rootDir: sehat-saathi/frontend
-    buildCommand: pip install -r requirements.txt
-    startCommand: streamlit run streamlit_app.py --server.port $PORT --server.address 0.0.0.0
-    envVars:
-      - key: API_BASE_URL
-        sync: false   # Set this to your backend Render URL after backend deploys
-      - key: MOCK_MODE
-        value: true
+        sync: false          # set manually in Render dashboard
+      - key: GROQ_MODEL
+        value: qwen/qwen3.8-27b
+      - key: GROQ_WHISPER_MODEL
+        value: whisper-large-v3-turbo
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false          # set manually in Render dashboard
+      - key: META_WHATSAPP_TOKEN
+        sync: false
+      - key: META_PHONE_NUMBER_ID
+        sync: false
+      - key: META_WHATSAPP_VERIFY_TOKEN
+        value: sehat_saathi_verify

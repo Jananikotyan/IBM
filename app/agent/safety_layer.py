@@ -121,8 +121,9 @@ RED_FLAG_PATTERNS: list[dict] = [
 ]
 
 # Pre-compile all patterns for performance
+# Use non-capturing groups (?:...) to avoid precedence issues with | alternation
 _COMPILED_PATTERNS: list[Tuple[str, re.Pattern]] = [
-    (group["category"], re.compile("|".join(group["keywords"]), re.IGNORECASE))
+    (group["category"], re.compile("|".join(f"(?:{kw})" for kw in group["keywords"]), re.IGNORECASE))
     for group in RED_FLAG_PATTERNS
 ]
 

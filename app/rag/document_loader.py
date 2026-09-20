@@ -39,32 +39,33 @@ def load_documents(docs_path: str) -> List[Document]:
 
     all_docs: List[Document] = []
 
-    # Load text and markdown files
-    for ext in ["*.txt", "*.md"]:
+    # Load text and markdown files — use case-insensitive patterns to handle .TXT / .MD on Linux
+    for ext, ext_label in [("*.txt", "txt"), ("*.TXT", "txt"), ("*.md", "md"), ("*.MD", "md")]:
         for file_path in docs_dir.glob(ext):
             try:
-                loader = TextLoader(str(file_path), encoding="utf-8")
+                loader = TextLoader(str(file_path), autodetect_encoding=True)
                 docs = loader.load()
                 for doc in docs:
                     doc.metadata["source"] = file_path.name
-                    doc.metadata["file_type"] = ext.lstrip("*.")
+                    doc.metadata["file_type"] = ext_label
                 all_docs.extend(docs)
                 logger.info("Loaded %d chunks from %s", len(docs), file_path.name)
             except Exception as e:
                 logger.error("Failed to load %s: %s", file_path, e)
 
-    # Load PDF files
-    for file_path in docs_dir.glob("*.pdf"):
-        try:
-            loader = PyPDFLoader(str(file_path))
-            docs = loader.load()
-            for doc in docs:
-                doc.metadata["source"] = file_path.name
-                doc.metadata["file_type"] = "pdf"
-            all_docs.extend(docs)
-            logger.info("Loaded %d pages from PDF: %s", len(docs), file_path.name)
-        except Exception as e:
-            logger.error("Failed to load PDF %s: %s", file_path, e)
+    # Load PDF files — case-insensitive
+    for ext in ["*.pdf", "*.PDF"]:
+        for file_path in docs_dir.glob(ext):
+            try:
+                loader = PyPDFLoader(str(file_path))
+                docs = loader.load()
+                for doc in docs:
+                    doc.metadata["source"] = file_path.name
+                    doc.metadata["file_type"] = "pdf"
+                all_docs.extend(docs)
+                logger.info("Loaded %d pages from PDF: %s", len(docs), file_path.name)
+            except Exception as e:
+                logger.error("Failed to load PDF %s: %s", file_path, e)
 
     logger.info("Total documents loaded: %d", len(all_docs))
     return all_docs

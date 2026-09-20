@@ -19,9 +19,9 @@ class Settings(BaseModel):
     ollama_base_url: str = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
     ollama_model: str = os.getenv("OLLAMA_MODEL", "granite3.1-dense:2b")
 
-    # ── Groq API (translation via LLaMA + Whisper STT) ────────────────────
+    # ── Groq API (translation via Qwen + Whisper STT) ────────────────────
     groq_api_key: str = os.getenv("GROQ_API_KEY", "")
-    groq_model: str = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+    groq_model: str = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b")
     groq_whisper_model: str = os.getenv("GROQ_WHISPER_MODEL", "whisper-large-v3-turbo")
 
     # ── IBM watsonx.ai (original — optional) ──────────────────────────────
@@ -41,10 +41,18 @@ class Settings(BaseModel):
     # ── Facility Locator ───────────────────────────────────────────────────
     google_places_api_key: str = os.getenv("GOOGLE_PLACES_API_KEY", "")
 
-    # ── Twilio / WhatsApp ──────────────────────────────────────────────────
+    # ── Telegram Bot (free, no account needed beyond phone) ───────────────
+    telegram_bot_token: str = os.getenv("TELEGRAM_BOT_TOKEN", "")
+
+    # ── Twilio / WhatsApp (legacy — optional) ─────────────────────────────
     twilio_account_sid: str = os.getenv("TWILIO_ACCOUNT_SID", "")
     twilio_auth_token: str = os.getenv("TWILIO_AUTH_TOKEN", "")
     twilio_whatsapp_from: str = os.getenv("TWILIO_WHATSAPP_FROM", "")
+
+    # ── Meta WhatsApp Cloud API (free official API) ────────────────────────
+    meta_whatsapp_token: str = os.getenv("META_WHATSAPP_TOKEN", "")
+    meta_phone_number_id: str = os.getenv("META_PHONE_NUMBER_ID", "")
+    meta_whatsapp_verify_token: str = os.getenv("META_WHATSAPP_VERIFY_TOKEN", "sehat_saathi_verify")
 
     # ── App ────────────────────────────────────────────────────────────────
     app_env: str = os.getenv("APP_ENV", "development")

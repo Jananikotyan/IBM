@@ -19,13 +19,18 @@ st.set_page_config(
     layout="wide",
 )
 
-# ── load analytics ───────────────────────────────────────────────────────────
+# ── load analytics — always call the running backend, never import directly ──
+API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000")
+
 @st.cache_data(ttl=30)
 def load_summary():
     try:
-        from app.analytics import get_summary
-        return get_summary()
+        import requests
+        r = requests.get(f"{API_BASE_URL}/analytics", timeout=5)
+        r.raise_for_status()
+        return r.json()
     except Exception as e:
+        st.warning(f"Could not reach backend: {e}")
         return None
 
 

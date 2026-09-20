@@ -10,7 +10,7 @@ No external dependencies — stdlib only (json, datetime, collections).
 import json
 import os
 import logging
-from datetime import datetime, date
+from datetime import datetime, date, timezone
 from collections import defaultdict, Counter
 from typing import Dict, List, Optional
 import threading
@@ -37,7 +37,12 @@ def _load() -> None:
         try:
             with open(path, "r", encoding="utf-8") as f:
                 data = json.load(f)
-                _store["queries"] = data.get("queries", [])
+                loaded = data.get("queries", [])
+                dropped = len(loaded) - 5000
+                if dropped > 0:
+                    logger.warning("Analytics: loaded last 5000 of %d records; %d older records dropped.", len(loaded), dropped)
+                    loaded = loaded[-5000:]
+                _store["queries"] = loaded
                 _store["total"] = len(_store["queries"])
         except Exception as e:
             logger.warning("Could not load analytics file: %s", e)
@@ -73,7 +78,7 @@ def track_query(
 ) -> None:
     """Record one user query event."""
     event = {
-        "ts": datetime.utcnow().isoformat(),
+        "ts": datetime.now(timezone.utc).isoformat(),
         "date": date.today().isoformat(),
         "session_id": session_id,
         "lang": detected_language,

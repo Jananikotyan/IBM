@@ -26,8 +26,10 @@ def get_ollama_llm():
         llm = OllamaLLM(
             model=settings.ollama_model,
             base_url=settings.ollama_base_url,
-            temperature=0.3,
-            num_predict=1024,
+            temperature=0.1,
+            num_predict=2048,
+            top_p=0.9,
+            repeat_penalty=1.1,
         )
         logger.info("Ollama LLM initialised: %s @ %s", settings.ollama_model, settings.ollama_base_url)
         return llm
@@ -38,8 +40,8 @@ def get_ollama_llm():
             llm = Ollama(
                 model=settings.ollama_model,
                 base_url=settings.ollama_base_url,
-                temperature=0.3,
-                num_predict=1024,
+                temperature=0.1,
+                num_predict=2048,
             )
             logger.info("Ollama LLM (community) initialised: %s", settings.ollama_model)
             return llm
@@ -59,7 +61,8 @@ def check_ollama_running() -> bool:
         if resp.status_code == 200:
             models = [m["name"] for m in resp.json().get("models", [])]
             model_base = settings.ollama_model.split(":")[0]
-            available = any(model_base in m for m in models)
+            # Use exact prefix match to avoid "granite" matching "granite-pro-ultra"
+            available = any(m == model_base or m.startswith(model_base + ":") or m.startswith(model_base + "-") for m in models)
             if not available:
                 logger.warning(
                     "Ollama running but model '%s' not found. "
