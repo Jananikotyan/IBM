@@ -63,9 +63,9 @@ _MARATHI_LATIN = re.compile(
 
 # Transliteration keyword patterns
 _HINDI_LATIN = re.compile(
-    r"\b(bukhaar|dard|sar\s*dard|pet\s*dard|khoon|saans|bacha|baccha|"
+    r"\b(bukhaar|dard|sar\s*dard|pet\s*dard|khoon|saans|baccha|"
     r"hafte|mahine|garbhwati|dawai|aspatal|bukhar|ulti|daast|khansi|"
-    r"mujhe|mera|meri|hai|hain|ho\s*raha|nahi|nahin|kya|kahan|kaun)\b",
+    r"mujhe|ho\s*raha|nahin|kahan|kaun)\b",
     re.IGNORECASE,
 )
 _KANNADA_LATIN = re.compile(
@@ -76,7 +76,7 @@ _KANNADA_LATIN = re.compile(
 )
 _TAMIL_LATIN = re.compile(
     r"\b(kaichal|thalaivaali|vayiru\s*vali|irumal|vanthi|pokkuri|"
-    r"kuzhanthai|karbham|thaai|maruthuvamanaai|asupathri|enakku|"
+    r"kuzhanthai|karbham|thaai|maruthuvamanaai|enakku|"
     r"naan|avan|aval|enge|enna|eppo)\b",
     re.IGNORECASE,
 )
@@ -87,24 +87,23 @@ _TELUGU_LATIN = re.compile(
 )
 _BENGALI_LATIN = re.compile(
     r"\b(jhor|jwor|mathavytha|matha\s*bytha|pet\s*bytha|kashi|bomi|"
-    r"diariya|shishu|gorbhoboti|daktar|amar|ami|apni|kothay|ki)\b",
+    r"diariya|shishu|gorbhoboti|amar|ami|apni|kothay)\b",
     re.IGNORECASE,
 )
 _GUJARATI_LATIN = re.compile(
-    r"\b(tav|matha\s*dukh|pete\s*dard|ubkai|dast|bachchu|garbhvati|"
-    r"davakhanu|mane|tane|ame|tame|kai|kyan|kyare|avu|javu|chhe|nathi)\b",
+    r"\b(tav|matha\s*dukh|pete\s*dard|ubkai|bachchu|garbhvati|"
+    r"davakhanu|tane|ame|tame|kyan|kyare|avu|javu|chhe|nathi)\b",
     re.IGNORECASE,
 )
 _PUNJABI_LATIN = re.compile(
-    r"\b(bukhar|sir\s*dard|pet\s*dard|khansi|ulti|dast|bacha|garbhvati|"
-    r"hospital|asptaal|menu|tenu|assi|tussi|ki|kithey|kadey|hai|nahi|"
-    r"karo|karna|hona|jaana|aana)\b",
+    r"\b(asptaal|menu|tenu|assi|tussi|kithey|kadey|"
+    r"ki\s*haal|kiddan|satshri|waheguru|punjabi|pind)\b",
     re.IGNORECASE,
 )
 _MALAYALAM_LATIN = re.compile(
-    r"\b(pani|talavedana|vayaruvali|chumma|okkuka|diare|kutti|"
-    r"garbhini|aasupatri|doctor|eniku|njan|ningal|evide|enthu|"
-    r"undo|alle|aanu|illa|venda|vendum)\b",
+    r"\b(talavedana|vayaruvali|chumma|okkuka|kutti|"
+    r"garbhini|aasupatri|eniku|njan|ningal|evide|enthu|"
+    r"undo|alle|aanu|venda|vendum)\b",
     re.IGNORECASE,
 )
 
